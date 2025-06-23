@@ -1,8 +1,6 @@
 import SignIn from "@/components/sign-in";
-import { auth } from "@/auth";
 
-export default async function Home() {
-  const session = await auth();
+export default function Home() {
   return (
     <div>
       <div className="flex justify-between p-2">
