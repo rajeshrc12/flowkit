@@ -1,6 +1,8 @@
-import { HomeIcon, KeyIcon } from "lucide-react";
+"use client";
 import React from "react";
+import { HomeIcon, KeyIcon } from "lucide-react";
 import ActiveLink from "@/components/active-link";
+
 const links = [
   {
     href: "/dashboard",
