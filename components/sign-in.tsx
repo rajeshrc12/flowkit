@@ -6,7 +6,7 @@ export default function SignIn() {
     <form
       action={async () => {
         "use server";
-        await signIn("google", { redirectTo: "/dashboard" });
+        await signIn("google", { redirectTo: "/workflow" });
       }}
     >
       <Button type="submit">Signin</Button>

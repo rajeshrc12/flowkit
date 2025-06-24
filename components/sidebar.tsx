@@ -5,9 +5,9 @@ import ActiveLink from "@/components/active-link";
 
 const links = [
   {
-    href: "/dashboard",
+    href: "/workflow",
     icon: <HomeIcon />,
-    name: "Dashboard",
+    name: "Workflow",
   },
   {
     href: "/credential",
@@ -17,7 +17,7 @@ const links = [
 ];
 const Sidebar = () => {
   return (
-    <div className="h-screen w-[200px] flex flex-col gap-2">
+    <div className="h-screen w-[200px] flex flex-col gap-2 border-r">
       <div className="font-bold text-2xl flex justify-center">Flowkit</div>
       <div className="flex flex-col gap-2">
         {links.map((link) => (
