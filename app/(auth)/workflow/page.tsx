@@ -34,7 +34,7 @@ const WorkflowPage = () => {
   return (
     <div className="pt-10 px-2">
       <div className="flex justify-between">
-        <div className="font-bold text-2xl">Dashboard</div>
+        <div className="font-bold text-2xl"></div>
         <Button onClick={createWorkflow}>Create Workflow</Button>
       </div>
       <div className="mt-2 flex flex-col gap-2">
