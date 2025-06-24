@@ -23,6 +23,32 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PATCH(req: Request) {
+  const {
+    user: { id },
+  } = (await auth()) as Session;
+
+  const { nodes, edges, workflowId } = await req.json();
+
+  try {
+    const workflow = await prisma.workflow.update({
+      where: {
+        id: workflowId,
+        userId: id,
+      },
+      data: {
+        node: nodes,
+        edge: edges,
+      },
+    });
+
+    return Response.json({ workflow }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating video:", error);
+    return Response.json({ error: "Error creating video" }, { status: 500 });
+  }
+}
+
 // export async function GET(req: Request) {
 //   try {
 //     const {

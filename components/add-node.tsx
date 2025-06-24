@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -20,7 +19,9 @@ const AddNode = ({ handleAddNode }: AddNodeProps) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>Add Node</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant="outline">Add Node</Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Node</DialogTitle>

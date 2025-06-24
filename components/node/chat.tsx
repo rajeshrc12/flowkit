@@ -7,7 +7,7 @@ const Chat = () => {
     <div className="border shadow px-5 py-3 bg-white rounded flex flex-col justify-center items-center">
       <MessageCircleIcon size={24} />
       <div className="font-bold">Chat</div>
-      <Handle type="source" position={Position.Right} id="chat-right" />
+      <Handle type="source" position={Position.Right} id="chat-output" />
     </div>
   );
 };

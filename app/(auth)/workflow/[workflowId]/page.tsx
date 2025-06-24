@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   addEdge,
   Background,
@@ -18,10 +18,24 @@ import Agent from "@/components/node/agent";
 import OpenAI from "@/components/node/model/openai";
 import Google from "@/components/node/model/google";
 import AddNode from "@/components/add-node";
+import { Button } from "@/components/ui/button";
+import { useParams } from "next/navigation";
+import useSWR from "swr";
+import { fetcher } from "@/utils/api";
 
 const WorkflowPage = () => {
+  const { workflowId } = useParams();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const { data, error, isLoading, mutate } = useSWR(
+    workflowId ? `/api/workflow/${workflowId}` : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: 0, // No polling
+    }
+  );
   const handleAddNode = (node: Node) => {
     setNodes((prevNodes) => [...prevNodes, node]);
   };
@@ -37,11 +51,46 @@ const WorkflowPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onSave = async () => {
+    const axios = require("axios");
+    const response = await axios.patch("/api/workflow", {
+      nodes,
+      edges,
+      workflowId,
+    });
+    mutate();
+    console.log(response.data);
+  };
+  useEffect(() => {
+    if (data) {
+      setNodes(data.node);
+      setEdges(data.edge);
+    }
+  }, [data]);
+  if (!data || isLoading) {
+    return (
+      <p className="text-center text-gray-500 mt-10 text-lg">
+        Loading workflow...
+      </p>
+    );
+  }
+  if (error) {
+    return (
+      <p className="text-center text-gray-500 mt-10 text-lg">
+        Error while loading workflow...
+      </p>
+    );
+  }
   return (
     <div className="w-full h-screen">
       <div className="h-[10%] bg-white border-b flex justify-between items-center px-5 flex justify-between">
         <div className="font-bold text-2xl">Workflow</div>
-        <AddNode handleAddNode={handleAddNode} />
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={onSave}>
+            Save
+          </Button>
+          <AddNode handleAddNode={handleAddNode} />
+        </div>
       </div>
       <div className="h-[90%]">
         <ReactFlow

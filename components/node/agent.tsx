@@ -7,8 +7,8 @@ const Agent = () => {
     <div className="border shadow px-5 py-3 w-[200px] bg-white rounded flex flex-col justify-center items-center">
       <BotIcon size={24} />
       <div className="font-bold">Agent</div>
-      <Handle type="target" position={Position.Left} id="agent-left" />
-      <Handle type="source" position={Position.Bottom} id="agent-bottom" />
+      <Handle type="target" position={Position.Left} id="agent-input" />
+      <Handle type="source" position={Position.Bottom} id="agent-model" />
     </div>
   );
 };
