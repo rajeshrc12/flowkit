@@ -28,7 +28,7 @@ export async function PATCH(req: Request) {
     user: { id },
   } = (await auth()) as Session;
 
-  const { nodes, edges, workflowId } = await req.json();
+  const { nodes, edges, workflowId, name } = await req.json();
 
   try {
     const workflow = await prisma.workflow.update({
@@ -39,6 +39,7 @@ export async function PATCH(req: Request) {
       data: {
         node: nodes,
         edge: edges,
+        name,
       },
     });
 
@@ -49,28 +50,22 @@ export async function PATCH(req: Request) {
   }
 }
 
-// export async function GET(req: Request) {
-//   try {
-//     const {
-//       user: { id },
-//     } = (await auth()) as Session;
-//     const { searchParams } = new URL(req.url);
-//     const page = parseInt(searchParams.get("page") || "1", 10);
-//     const limit = parseInt(searchParams.get("limit") || "10", 10);
-//     const offset = (page - 1) * limit;
+export async function GET() {
+  try {
+    const {
+      user: { id },
+    } = (await auth()) as Session;
 
-//     const videos = await prisma.workflow.findMany({
-//       skip: offset,
-//       take: limit,
-//       orderBy: { createdAt: "desc" },
-//       where: { userId: id },
-//     });
-
-//     const total = await prisma.video.count({ where: { userId: id } }); // Get total video count
-
-//     return Response.json({ videos, total, page, limit }, { status: 200 });
-//   } catch (error) {
-//     console.error("Error fetching videos:", error);
-//     return Response.json({ error: "Failed to fetch videos" }, { status: 500 });
-//   }
-// }
+    const workflows = await prisma.workflow.findMany({
+      where: { userId: id },
+    });
+    console.log(workflows);
+    return Response.json({ workflows }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching workflows:", error);
+    return Response.json(
+      { error: "Failed to fetch workflows" },
+      { status: 500 }
+    );
+  }
+}

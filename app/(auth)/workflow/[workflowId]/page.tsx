@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   addEdge,
   Background,
@@ -22,11 +22,13 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
+import { toast } from "sonner";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [name, setName] = useState("");
   const { data, error, isLoading, mutate } = useSWR(
     workflowId ? `/api/workflow/${workflowId}` : null,
     fetcher,
@@ -56,15 +58,18 @@ const WorkflowPage = () => {
     const response = await axios.patch("/api/workflow", {
       nodes,
       edges,
+      name,
       workflowId,
     });
     mutate();
+    toast("Workflow has been saved");
     console.log(response.data);
   };
   useEffect(() => {
     if (data) {
       setNodes(data.node);
       setEdges(data.edge);
+      setName(data.name);
     }
   }, [data]);
   if (!data || isLoading) {
@@ -84,7 +89,12 @@ const WorkflowPage = () => {
   return (
     <div className="w-full h-screen">
       <div className="h-[10%] bg-white border-b flex justify-between items-center px-5 flex justify-between">
-        <div className="font-bold text-2xl">Workflow</div>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="font-bold"
+        />
         <div className="flex gap-2">
           <Button variant="outline" onClick={onSave}>
             Save
