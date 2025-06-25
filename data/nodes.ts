@@ -18,9 +18,9 @@ export const nodes = [
     data: { label: "OpenAI" },
   },
   {
-    id: "google",
-    type: "google",
+    id: "gemini",
+    type: "gemini",
     position: { x: 400, y: 400 },
-    data: { label: "Google" },
+    data: { label: "Gemini" },
   },
 ];

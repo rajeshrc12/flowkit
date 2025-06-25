@@ -16,7 +16,7 @@ import "@xyflow/react/dist/style.css";
 import Chat from "@/components/node/chat";
 import Agent from "@/components/node/agent";
 import OpenAI from "@/components/node/model/openai";
-import Google from "@/components/node/model/google";
+import Gemini from "@/components/node/model/gemini";
 import AddNode from "@/components/add-node";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
@@ -45,7 +45,7 @@ const WorkflowPage = () => {
     const edge: Edge = {
       ...connection,
       animated: true,
-      id: `edge-${connection.sourceHandle}-${connection.targetHandle}`,
+      id: `edge-${connection.source}-${connection.sourceHandle}-${connection.target}-${connection.targetHandle}`,
       sourceHandle: connection.sourceHandle ?? null,
       targetHandle: connection.targetHandle ?? null,
     };
@@ -67,8 +67,8 @@ const WorkflowPage = () => {
   };
   useEffect(() => {
     if (data) {
-      setNodes(data.node);
-      setEdges(data.edge);
+      setNodes(data.node || []);
+      setEdges(data.edge || []);
       setName(data.name);
     }
   }, [data]);
@@ -113,7 +113,7 @@ const WorkflowPage = () => {
             chat: Chat,
             agent: Agent,
             openai: OpenAI,
-            google: Google,
+            gemini: Gemini,
           }}
         >
           <Background />
