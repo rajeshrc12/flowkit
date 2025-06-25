@@ -23,6 +23,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import { toast } from "sonner";
+import Chatbox from "@/components/chatbox";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
@@ -105,7 +106,7 @@ const WorkflowPage = () => {
           <AddNode handleAddNode={handleAddNode} />
         </div>
       </div>
-      <div className="h-[90%]">
+      <div className="h-[90%] flex">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -122,6 +123,7 @@ const WorkflowPage = () => {
           <Background />
           <Controls />
         </ReactFlow>
+        <Chatbox />
       </div>
     </div>
   );
