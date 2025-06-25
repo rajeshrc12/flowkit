@@ -1,18 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { SendIcon } from "lucide-react";
+import { IoMdClose } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { setChatNode } from "@/app/slices/chatNodeSlice";
 
 const Chatbox = () => {
   const chatNode = useSelector((state: RootState) => state.chatNode);
-  const [message, setMessage] = React.useState("");
-  const [chats, setChats] = React.useState<string[]>([]);
+  const dispatch = useDispatch();
+  const [message, setMessage] = useState("");
+  const [chats, setChats] = useState<string[]>([]);
   console.log(chatNode);
   if (chatNode.chat)
     return (
-      <div className="w-[500px] h-full border-l">
+      <div className="relative w-[500px] h-full border-l">
+        <Button
+          className="absolute top-0 left-[-50px]"
+          onClick={() => {
+            dispatch(setChatNode({ chat: !chatNode.chat }));
+          }}
+        >
+          <IoMdClose size={20} />
+        </Button>
         <div className="h-[90%] flex flex-col-reverse overflow-y-scroll py-2 gap-1">
           {chats.map((chat, index) => (
             <div
