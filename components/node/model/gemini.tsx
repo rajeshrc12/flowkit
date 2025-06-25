@@ -4,7 +4,7 @@ import React from "react";
 import { AiOutlineEdit, AiOutlineGoogle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { setEditNode } from "@/app/slices/editNodeSlice";
-const Gemini = ({ id }: { id: string }) => {
+const Gemini = ({ id, data }: { id: string; data: any }) => {
   const dispatch = useDispatch();
 
   return (
@@ -16,7 +16,9 @@ const Gemini = ({ id }: { id: string }) => {
         className="cursor-pointer absolute top-[-20px] right-0"
         onClick={() => {
           console.log(id);
-          dispatch(setEditNode({ type: "gemini", id }));
+          dispatch(
+            setEditNode({ type: "gemini", id, credentialId: data.credentialId })
+          );
         }}
       />
     </div>

@@ -31,9 +31,6 @@ const EditNode = () => {
             </DialogTitle>
           </DialogHeader>
           {editNode.type === "gemini" && <GeminiCredential />}
-          <DialogFooter>
-            <DialogClose>Cancel</DialogClose>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     );

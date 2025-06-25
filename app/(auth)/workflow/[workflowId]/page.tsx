@@ -33,13 +33,16 @@ const WorkflowPage = () => {
     workflowId ? `/api/workflow/${workflowId}` : null,
     fetcher,
     {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
       refreshInterval: 0, // No polling
     }
   );
   const handleAddNode = (node: Node) => {
-    setNodes((prevNodes) => [...prevNodes, node]);
+    setNodes((prevNodes) => [
+      ...prevNodes,
+      { ...node, id: new Date().getTime().toString() },
+    ]);
   };
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {

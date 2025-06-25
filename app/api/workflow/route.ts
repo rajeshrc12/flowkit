@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
+import { db } from "@/lib/mongodb";
 import { prisma } from "@/lib/prisma";
 import { Session } from "next-auth";
+import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
   const {
@@ -44,6 +46,33 @@ export async function PATCH(req: Request) {
     });
 
     return Response.json({ workflow }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating video:", error);
+    return Response.json({ error: "Error creating video" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  const {
+    user: { id },
+  } = (await auth()) as Session;
+
+  const { workflowId, credentialId, nodeId } = await req.json();
+
+  try {
+    const result = await db.collection("Workflow").updateOne(
+      {
+        _id: new ObjectId(workflowId),
+        "node.id": nodeId,
+      },
+      {
+        $set: {
+          "node.$.data.credentialId": credentialId,
+        },
+      }
+    );
+
+    return Response.json({ result }, { status: 201 });
   } catch (error) {
     console.error("Error creating video:", error);
     return Response.json({ error: "Error creating video" }, { status: 500 });
