@@ -5,13 +5,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { useDispatch } from "react-redux";
-import { setEditNode } from "@/app/slices/editNodeSlice";
+import { resetEditNode } from "@/app/slices/editNodeSlice";
 import GeminiCredential from "@/components/gemini-credential";
 
 const EditNode = () => {
@@ -22,7 +20,10 @@ const EditNode = () => {
     return (
       <Dialog
         open={!!editNode?.type}
-        onOpenChange={(value) => dispatch(setEditNode({ type: value }))}
+        onOpenChange={(value) => {
+          console.log("Dialog", value);
+          dispatch(resetEditNode());
+        }}
       >
         <DialogContent>
           <DialogHeader>

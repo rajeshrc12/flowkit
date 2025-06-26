@@ -18,9 +18,11 @@ const editNodeSlice = createSlice({
   initialState,
   reducers: {
     setEditNode: (state, action) => {
-      if (action.payload.type) state.type = action.payload.type;
-      if (action.payload.id) state.id = action.payload.id;
-      if (action.payload.credentialId)
+      if (Object.keys(action.payload).includes("type"))
+        state.type = action.payload.type;
+      if (Object.keys(action.payload).includes("id"))
+        state.id = action.payload.id;
+      if (Object.keys(action.payload).includes("credentialId"))
         state.credentialId = action.payload.credentialId;
     },
     resetEditNode: (state) => {

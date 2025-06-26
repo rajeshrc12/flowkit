@@ -33,7 +33,7 @@ const Chatbox = () => {
                 chat === "l" ? "justify-start" : "justify-end"
               }`}
             >
-              <div className="p-2 rounded border max-w-[200px] word-break break-all">
+              <div className="px-2 py-1 rounded border max-w-[200px] word-break break-all">
                 {chat}
               </div>
             </div>
