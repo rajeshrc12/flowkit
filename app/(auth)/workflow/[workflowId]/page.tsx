@@ -40,10 +40,7 @@ const WorkflowPage = () => {
     }
   );
   const handleAddNode = (node: Node) => {
-    setNodes((prevNodes) => [
-      ...prevNodes,
-      { ...node, id: new Date().getTime().toString() },
-    ]);
+    setNodes((prevNodes) => [...prevNodes, node]);
   };
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
@@ -114,7 +111,7 @@ const WorkflowPage = () => {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           nodeTypes={{
-            chat: Chat,
+            chat_node: Chat,
             agent: Agent,
             openai: OpenAI,
             gemini: Gemini,
