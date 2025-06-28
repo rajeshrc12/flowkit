@@ -24,6 +24,7 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import { toast } from "sonner";
 import Chatbox from "@/components/chatbox";
+import Pinecone from "@/components/node/pinecone";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
@@ -115,6 +116,7 @@ const WorkflowPage = () => {
             agent: Agent,
             openai: OpenAI,
             gemini: Gemini,
+            pinecone: Pinecone,
           }}
         >
           <Background />

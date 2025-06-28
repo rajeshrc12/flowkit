@@ -23,4 +23,10 @@ export const nodes = [
     position: { x: 400, y: 400 },
     data: { label: "Gemini", isStart: false },
   },
+  {
+    id: "pinecone",
+    type: "pinecone",
+    position: { x: 500, y: 400 },
+    data: { label: "Pinecone", isStart: false },
+  },
 ];
