@@ -48,9 +48,8 @@ const PineconeCredential = () => {
   const [selectedIndex, setSelectedIndex] = useState(editNode.modelId || "");
   useEffect(() => {
     setSelectedCredential(editNode.credentialId || "");
-    console.clear();
-    console.log("pinecone credential", editNode.credentialId);
-  }, [editNode.credentialId]);
+    setSelectedIndex(editNode.modelId || "");
+  }, [editNode.credentialId, editNode.modelId]);
 
   const onSave = async () => {
     const response1 = await axios.put("/api/workflow", {

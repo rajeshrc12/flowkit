@@ -8,7 +8,6 @@ export async function GET() {
 
     const indexList = await pc.listIndexes();
 
-    console.log(indexList);
     return Response.json({ indexList }, { status: 200 });
   } catch (error) {
     console.error("Error fetching index list:", error);
