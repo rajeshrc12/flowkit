@@ -1,15 +1,12 @@
-import { Pinecone } from "@pinecone-database/pinecone";
-
-const PINECONE_API_KEY = process.env.PINECONE_API_KEY!;
-const pc = new Pinecone({ apiKey: PINECONE_API_KEY });
+// app/api/pinecone/route.ts or pages/api/pinecone.ts
+import { pinecone } from "@/lib/pinecone";
 
 export async function GET() {
   try {
-    const indexList = await pc.listIndexes();
-
-    return Response.json({ indexList }, { status: 200 });
+    const indexList = await pinecone.listIndexes();
+    return Response.json({ indexList });
   } catch (error) {
-    console.error("Error fetching index list:", error);
+    console.error("Pinecone error:", error);
     return Response.json(
       { error: "Failed to fetch index list" },
       { status: 500 }
