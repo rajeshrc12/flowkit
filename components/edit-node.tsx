@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { resetEditNode } from "@/app/slices/editNodeSlice";
 import GeminiCredential from "@/components/gemini-credential";
 import PineconeCredential from "@/components/pinecone-credential";
-import GeminiEmbeddingCredential from "./gemini-embedding-credential";
+import GeminiEmbeddingCredential from "@/components/gemini-embedding-credential";
 
 const EditNode = () => {
   const editNode = useSelector((state: RootState) => state.editNode);

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Input } from "@/components/ui/input";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { SendIcon } from "lucide-react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
