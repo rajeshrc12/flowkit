@@ -70,6 +70,7 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
               <SelectContent>
                 <SelectItem value="openai">OpenAI</SelectItem>
                 <SelectItem value="gemini">Gemini</SelectItem>
+                <SelectItem value="pinecone">Pinecone</SelectItem>
               </SelectContent>
             </Select>
           </div>

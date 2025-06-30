@@ -24,6 +24,12 @@ export const nodes = [
     data: { label: "Gemini", isStart: false },
   },
   {
+    id: "geminiEmbedding",
+    type: "geminiEmbedding",
+    position: { x: 500, y: 400 },
+    data: { label: "Gemini Embedding", isStart: false },
+  },
+  {
     id: "pinecone",
     type: "pinecone",
     position: { x: 500, y: 400 },

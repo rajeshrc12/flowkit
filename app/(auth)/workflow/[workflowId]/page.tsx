@@ -25,6 +25,7 @@ import { fetcher } from "@/utils/api";
 import { toast } from "sonner";
 import Chatbox from "@/components/chatbox";
 import Pinecone from "@/components/node/pinecone";
+import GeminiEmbedding from "@/components/node/model/gemini-embedding";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
@@ -41,7 +42,10 @@ const WorkflowPage = () => {
     }
   );
   const handleAddNode = (node: Node) => {
-    setNodes((prevNodes) => [...prevNodes, node]);
+    setNodes((prevNodes) => [
+      ...prevNodes,
+      { ...node, id: new Date().getTime().toString() },
+    ]);
   };
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
@@ -117,6 +121,7 @@ const WorkflowPage = () => {
             openai: OpenAI,
             gemini: Gemini,
             pinecone: Pinecone,
+            geminiEmbedding: GeminiEmbedding,
           }}
         >
           <Background />

@@ -8,7 +8,12 @@ const Agent = () => {
       <BotIcon size={24} />
       <div className="font-bold">Agent</div>
       <Handle type="target" position={Position.Left} id="agent-input" />
-      <Handle type="source" position={Position.Bottom} id="agent-model">
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="agent-model"
+        style={{ marginLeft: "-50px" }}
+      >
         model
       </Handle>
       <Handle

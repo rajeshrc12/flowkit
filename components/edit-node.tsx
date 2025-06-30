@@ -11,6 +11,8 @@ import { RootState } from "@/app/store/store";
 import { useDispatch } from "react-redux";
 import { resetEditNode } from "@/app/slices/editNodeSlice";
 import GeminiCredential from "@/components/gemini-credential";
+import PineconeCredential from "@/components/pinecone-credential";
+import GeminiEmbeddingCredential from "./gemini-embedding-credential";
 
 const EditNode = () => {
   const editNode = useSelector((state: RootState) => state.editNode);
@@ -32,6 +34,8 @@ const EditNode = () => {
             </DialogTitle>
           </DialogHeader>
           {editNode.type === "gemini" && <GeminiCredential />}
+          {editNode.type === "geminiEmbedding" && <GeminiEmbeddingCredential />}
+          {editNode.type === "pinecone" && <PineconeCredential />}
         </DialogContent>
       </Dialog>
     );
