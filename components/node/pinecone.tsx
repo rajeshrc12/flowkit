@@ -26,6 +26,7 @@ const Pinecone = ({ id, data }: { id: string; data: any }) => {
               type: "pinecone",
               id,
               credentialId: data?.credentialId,
+              modelId: data.index,
             })
           );
         }}

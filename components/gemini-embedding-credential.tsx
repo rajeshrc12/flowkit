@@ -17,6 +17,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { resetEditNode } from "@/app/slices/editNodeSlice";
 import { toast } from "sonner";
+import { geminiEmbeddingModels } from "@/data/models";
+import { Label } from "@/components/ui/label";
 
 const GeminiEmbeddingCredential = () => {
   const { workflowId } = useParams();
@@ -30,21 +32,26 @@ const GeminiEmbeddingCredential = () => {
   const [selectedCredential, setSelectedCredential] = useState(
     editNode.credentialId || ""
   );
+  const [selectedModel, setSelectedModel] = useState(editNode.modelId || "");
   useEffect(() => {
     setSelectedCredential(editNode.credentialId || "");
   }, [editNode.credentialId]);
 
   const onSave = async () => {
-    const response = await axios.put("/api/workflow", {
+    const response1 = await axios.put("/api/workflow", {
       workflowId,
-      credentialId: selectedCredential,
+      credentialKey: "credentialId",
+      credentialValue: selectedCredential,
       nodeId: editNode.id,
     });
-    if (response.data.result.matchedCount) {
-      dispatch(resetEditNode());
-      toast("Credential linked successfully");
-    }
-    console.log(response);
+    const response2 = await axios.put("/api/workflow", {
+      workflowId,
+      credentialKey: "modelId",
+      credentialValue: selectedModel,
+      nodeId: editNode.id,
+    });
+    dispatch(resetEditNode());
+    console.log(response1.data, response2.data);
   };
   if (!data || isLoading || !editNode) {
     return <p>Loading...</p>;
@@ -54,15 +61,29 @@ const GeminiEmbeddingCredential = () => {
     return <p>Error while loading credentials...</p>;
   }
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
+      <Label htmlFor="credential">Credential</Label>
       <Select value={selectedCredential} onValueChange={setSelectedCredential}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select gemini credential" />
+        <SelectTrigger id="credential" className="w-full">
+          <SelectValue placeholder="Select credential" />
         </SelectTrigger>
         <SelectContent>
           {data?.credentials?.map((credential: any) => (
             <SelectItem key={credential.id} value={credential.id}>
               {credential.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Label htmlFor="model">Embedding Model</Label>
+      <Select value={selectedModel} onValueChange={setSelectedModel}>
+        <SelectTrigger id="model" className="w-full">
+          <SelectValue placeholder="Select embedding model" />
+        </SelectTrigger>
+        <SelectContent>
+          {geminiEmbeddingModels.map((model: any) => (
+            <SelectItem key={model.id} value={model.id}>
+              {model.name}
             </SelectItem>
           ))}
         </SelectContent>

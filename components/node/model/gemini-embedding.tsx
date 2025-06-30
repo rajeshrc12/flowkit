@@ -22,6 +22,7 @@ const GeminiEmbedding = ({ id, data }: { id: string; data: any }) => {
               type: "geminiEmbedding",
               id,
               credentialId: data.credentialId,
+              modelId: data.modelId,
             })
           );
         }}

@@ -17,6 +17,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { resetEditNode } from "@/app/slices/editNodeSlice";
 import { toast } from "sonner";
+import { geminiModels } from "@/data/models";
+import { Label } from "@/components/ui/label";
 
 const PineconeCredential = () => {
   const { workflowId } = useParams();
@@ -31,42 +33,72 @@ const PineconeCredential = () => {
       refreshInterval: 0, // No polling
     }
   );
+  const {
+    data: indexData,
+    error: indexError,
+    isLoading: indexLoading,
+  } = useSWR(`/api/pinecone`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: 0, // No polling
+  });
   const [selectedCredential, setSelectedCredential] = useState(
     editNode.credentialId || ""
   );
+  const [selectedIndex, setSelectedIndex] = useState(editNode.modelId || "");
   useEffect(() => {
     setSelectedCredential(editNode.credentialId || "");
+    console.clear();
+    console.log("pinecone credential", editNode.credentialId);
   }, [editNode.credentialId]);
 
   const onSave = async () => {
-    const response = await axios.put("/api/workflow", {
+    const response1 = await axios.put("/api/workflow", {
       workflowId,
-      credentialId: selectedCredential,
+      credentialKey: "credentialId",
+      credentialValue: selectedCredential,
       nodeId: editNode.id,
     });
-    if (response.data.result.matchedCount) {
-      dispatch(resetEditNode());
-      toast("Credential linked successfully");
-    }
-    console.log(response);
+    const response2 = await axios.put("/api/workflow", {
+      workflowId,
+      credentialKey: "index",
+      credentialValue: selectedIndex,
+      nodeId: editNode.id,
+    });
+    dispatch(resetEditNode());
+    console.log(response1.data, response2.data);
   };
-  if (!data || isLoading || !editNode) {
+  if (!data || isLoading || !editNode || !indexData || indexLoading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
+  if (error || indexError) {
     return <p>Error while loading credentials...</p>;
   }
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
+      <Label htmlFor="credential">Credential</Label>
       <Select value={selectedCredential} onValueChange={setSelectedCredential}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger id="credential" className="w-full">
           <SelectValue placeholder="Select pinecone credential" />
         </SelectTrigger>
         <SelectContent>
           {data?.credentials?.map((credential: any) => (
             <SelectItem key={credential.id} value={credential.id}>
               {credential.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Label htmlFor="index">Index</Label>
+      <Select value={selectedIndex} onValueChange={setSelectedIndex}>
+        <SelectTrigger id="index" className="w-full">
+          <SelectValue placeholder="Select pinecone index" />
+        </SelectTrigger>
+        <SelectContent>
+          {indexData?.indexList?.indexes?.map((index: any) => (
+            <SelectItem key={index.name} value={index.name}>
+              {index.name}
             </SelectItem>
           ))}
         </SelectContent>

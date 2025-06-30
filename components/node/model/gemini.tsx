@@ -19,7 +19,12 @@ const Gemini = ({ id, data }: { id: string; data: any }) => {
         onClick={() => {
           console.log(id);
           dispatch(
-            setEditNode({ type: "gemini", id, credentialId: data.credentialId })
+            setEditNode({
+              type: "gemini",
+              id,
+              credentialId: data.credentialId,
+              modelId: data.modelId,
+            })
           );
         }}
       />

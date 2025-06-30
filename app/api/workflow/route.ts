@@ -57,7 +57,8 @@ export async function PUT(req: Request) {
     user: { id },
   } = (await auth()) as Session;
 
-  const { workflowId, credentialId, nodeId } = await req.json();
+  const { workflowId, credentialKey, credentialValue, nodeId } =
+    await req.json();
 
   try {
     const result = await db.collection("Workflow").updateOne(
@@ -67,7 +68,7 @@ export async function PUT(req: Request) {
       },
       {
         $set: {
-          "node.$.data.credentialId": credentialId,
+          [`node.$.data.${credentialKey}`]: credentialValue,
         },
       }
     );
