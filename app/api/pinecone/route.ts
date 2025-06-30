@@ -1,11 +1,10 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY!;
+const pc = new Pinecone({ apiKey: PINECONE_API_KEY });
 
 export async function GET() {
   try {
-    const pc = new Pinecone({ apiKey: PINECONE_API_KEY });
-
     const indexList = await pc.listIndexes();
 
     return Response.json({ indexList }, { status: 200 });
