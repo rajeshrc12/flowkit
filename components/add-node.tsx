@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 interface AddNodeProps {
   handleAddNode: (node: Node) => void;
 }
+
 const AddNode = ({ handleAddNode }: AddNodeProps) => {
   const [open, setOpen] = React.useState(false);
   return (
@@ -28,9 +29,12 @@ const AddNode = ({ handleAddNode }: AddNodeProps) => {
           <div className="flex flex-wrap gap-2  ">
             {nodes.map((node) => (
               <Button
-                key={node.id}
+                key={node.type}
                 onClick={() => {
-                  handleAddNode(node);
+                  handleAddNode({
+                    ...node,
+                    id: new Date().getTime().toString(),
+                  });
                   setOpen(false);
                 }}
                 className="px-4 py-2 rounded border"

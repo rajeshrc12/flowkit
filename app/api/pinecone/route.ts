@@ -1,4 +1,3 @@
-// app/api/pinecone/route.ts or pages/api/pinecone.ts
 import { pinecone } from "@/lib/pinecone";
 
 export async function GET() {
