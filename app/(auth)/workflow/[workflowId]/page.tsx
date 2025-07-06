@@ -13,23 +13,28 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import Chat from "@/components/node/chat";
-import Agent from "@/components/node/agent";
-import OpenAI from "@/components/node/model/openai";
-import Gemini from "@/components/node/model/gemini";
-import AddNode from "@/components/add-node";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import { toast } from "sonner";
 import Chatbox from "@/components/chatbox";
-import Pinecone from "@/components/node/pinecone";
-import GeminiEmbedding from "@/components/node/model/gemini-embedding";
+import GraphBoard from "@/components/graph-board";
+import EditNode from "@/components/edit-node";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([
+    {
+      id: "graph_board",
+      type: "graph_board",
+      position: { x: 400, y: 200 },
+      data: {
+        label: "Google Sheets",
+      },
+      dragHandle: ".drag-handle__custom",
+    },
+  ]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [name, setName] = useState("");
   const { data, error, isLoading, mutate } = useSWR(
@@ -70,8 +75,8 @@ const WorkflowPage = () => {
   };
   useEffect(() => {
     if (data) {
-      setNodes(data.node || []);
-      setEdges(data.edge || []);
+      // setNodes(data.node || []);
+      // setEdges(data.edge || []);
       setName(data.name);
     }
   }, [data]);
@@ -91,7 +96,7 @@ const WorkflowPage = () => {
   }
   return (
     <div className="w-full h-screen">
-      <div className="h-[10%] bg-white border-b flex justify-between items-center px-5 flex justify-between">
+      <div className="h-[10%] bg-white border-b flex justify-between items-center px-5">
         <input
           type="text"
           value={name}
@@ -102,10 +107,9 @@ const WorkflowPage = () => {
           <Button variant="outline" onClick={onSave}>
             Save
           </Button>
-          <AddNode handleAddNode={handleAddNode} />
         </div>
       </div>
-      <div className="h-[90%] flex">
+      <div className="relative h-[90%] flex bg-gray-50">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -113,18 +117,13 @@ const WorkflowPage = () => {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           nodeTypes={{
-            chat_node: Chat,
-            agent: Agent,
-            openai: OpenAI,
-            gemini: Gemini,
-            pinecone: Pinecone,
-            geminiEmbedding: GeminiEmbedding,
+            graph_board: GraphBoard,
           }}
         >
           <Background />
           <Controls />
         </ReactFlow>
-        <Chatbox />
+        <EditNode />
       </div>
     </div>
   );

@@ -8,38 +8,43 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Node } from "@xyflow/react";
 import { nodes } from "@/data/nodes";
 import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { useDispatch } from "react-redux";
+import { setAddNodeModal } from "@/app/slices/nodeSlice";
+import { Node } from "@/types/node";
 
 interface AddNodeProps {
   handleAddNode: (node: Node) => void;
 }
 
 const AddNode = ({ handleAddNode }: AddNodeProps) => {
-  const [open, setOpen] = React.useState(false);
+  const addNodeModal = useSelector(
+    (state: RootState) => state.node.addNodeModal
+  );
+  const dispatch = useDispatch();
+  const setOpen = (open: boolean) => {
+    dispatch(setAddNodeModal(open));
+  };
+  if (!addNodeModal) return;
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Add Node</Button>
-      </DialogTrigger>
+    <Dialog open={!!addNodeModal} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Node</DialogTitle>
           <div className="flex flex-wrap gap-2  ">
-            {nodes.map((node) => (
+            {nodes.map((node: Node) => (
               <Button
-                key={node.type}
+                key={node.id}
                 onClick={() => {
-                  handleAddNode({
-                    ...node,
-                    id: new Date().getTime().toString(),
-                  });
+                  handleAddNode(node);
                   setOpen(false);
                 }}
                 className="px-4 py-2 rounded border"
               >
-                {node.data.label}
+                {node.label}
               </Button>
             ))}
           </div>
