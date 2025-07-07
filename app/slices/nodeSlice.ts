@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import editNodeSlice from "./editNodeSlice";
+
+interface EditNode {
+  type: string | null;
+  id: string | null;
+}
 
 interface NodeState {
   addNodeModal: Boolean;
-  editNodeModal: Boolean;
+  editNode: EditNode;
 }
 
 const initialState: NodeState = {
   addNodeModal: false,
-  editNodeModal: false,
+  editNode: { type: null, id: null },
 };
 
 const nodeSlice = createSlice({
@@ -21,11 +25,11 @@ const nodeSlice = createSlice({
     resetAddNodeModal: (state) => {
       state.addNodeModal = false;
     },
-    setEditNodeModal: (state, action) => {
-      state.editNodeModal = action.payload;
+    setEditNode: (state, action) => {
+      state.editNode = action.payload;
     },
-    resetEditNodeModal: (state) => {
-      state.editNodeModal = false;
+    resetEditNode: (state) => {
+      state.editNode = { type: null, id: null };
     },
   },
 });
@@ -33,7 +37,7 @@ const nodeSlice = createSlice({
 export const {
   setAddNodeModal,
   resetAddNodeModal,
-  setEditNodeModal,
-  resetEditNodeModal,
+  setEditNode,
+  resetEditNode,
 } = nodeSlice.actions;
 export default nodeSlice.reducer;
