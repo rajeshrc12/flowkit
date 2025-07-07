@@ -5,13 +5,14 @@ import Slack from "@/components/node/slack";
 interface BaseNodeProps {
   type: string;
   index: number;
+  id: string;
 }
-const BaseNode = ({ type, index }: BaseNodeProps) => {
+const BaseNode = ({ type, index, id }: BaseNodeProps) => {
   if (type === "google_sheets") {
-    return <GoogleSheets index={index} />;
+    return <GoogleSheets index={index} id={id} />;
   }
   if (type === "slack") {
-    return <Slack index={index} />;
+    return <Slack index={index} id={id} />;
   }
   return <div>BaseNode</div>;
 };

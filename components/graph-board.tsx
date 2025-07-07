@@ -1,32 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import AddNode from "@/components/add-node";
-import { Node } from "@/types/node";
 import BaseNode from "@/components/base-node";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
 const GraphBoard = () => {
-  const [nodes, setNodes] = useState<Node[]>([
-    {
-      id: "google_sheets",
-      type: "google_sheets",
-      label: "Google Sheets",
-    },
-  ]);
+  const nodes = useSelector((state: RootState) => state.node.nodes);
+  console.log(nodes);
   return (
     <div>
       <div>
         {nodes.map((node, index) => (
-          <BaseNode type={node.type} index={index + 1} key={node.id} />
+          <BaseNode
+            type={node.type}
+            index={index + 1}
+            key={node.id}
+            id={node.id}
+          />
         ))}
       </div>
       <div>
-        <AddNode
-          handleAddNode={(node: Node) => {
-            setNodes((prevNodes) => [
-              ...prevNodes,
-              { ...node, id: new Date().getTime().toString() },
-            ]);
-          }}
-        />
+        <AddNode />
       </div>
     </div>
   );

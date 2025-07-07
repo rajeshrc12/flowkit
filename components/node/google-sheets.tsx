@@ -6,7 +6,7 @@ import { setEditNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { cn } from "@/lib/utils";
-const GoogleSheets = ({ index }: { index: number } & any) => {
+const GoogleSheets = ({ index, id }: { index: number; id: string } & any) => {
   const dispatch = useDispatch();
   const editNode = useSelector((state: RootState) => state.node.editNode);
   return (
@@ -19,7 +19,7 @@ const GoogleSheets = ({ index }: { index: number } & any) => {
         }
       )}
       onClick={() => {
-        dispatch(setEditNode({ type: "google-sheets", id: index }));
+        dispatch(setEditNode({ type: "google-sheets", id }));
       }}
     >
       <div className="flex justify-between">

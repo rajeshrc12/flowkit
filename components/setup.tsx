@@ -11,9 +11,8 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 
-const Setup = () => {
+const Setup = ({ data, setData }: { data: any; setData: any }) => {
   const editNode = useSelector((state: RootState) => state.node.editNode);
-  console.log(editNode);
   if (editNode.type === "google-sheets")
     return (
       <div className="flex flex-col text-sm gap-2">
@@ -24,15 +23,20 @@ const Setup = () => {
               <SiGooglesheets color="green" />
               <div>Google sheet</div>
             </div>
-            <button className="px-2 py-0 h-auto rounded bg-blue-800 text-white">
-              Change
-            </button>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
           <div>Trigger Event</div>
-          <Select>
+          <Select
+            value={data?.triggerEvent || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                triggerEvent: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select event" />
             </SelectTrigger>
@@ -48,13 +52,23 @@ const Setup = () => {
 
         <div className="flex flex-col gap-2">
           <div>Account</div>
-          <Select>
+          <Select
+            value={data?.account || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                account: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select account" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">abc@gmail.com</SelectItem>
+                <SelectItem value="example@gmail.com">
+                  example@gmail.com
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -71,15 +85,20 @@ const Setup = () => {
               <SiSlack />
               <div>Slack</div>
             </div>
-            <button className="px-2 py-0 h-auto rounded bg-blue-800 text-white">
-              Change
-            </button>
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
           <div>Action Event</div>
-          <Select>
+          <Select
+            value={data?.actionEvent || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                actionEvent: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select event" />
             </SelectTrigger>
@@ -93,13 +112,21 @@ const Setup = () => {
 
         <div className="flex flex-col gap-2">
           <div>Account</div>
-          <Select>
+          <Select
+            value={data?.account || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                account: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select account" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">abc@gmail.com</SelectItem>
+                <SelectItem value="abc@gmail.com">abc@gmail.com</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

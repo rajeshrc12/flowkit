@@ -12,21 +12,28 @@ import { RootState } from "@/app/store/store";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const Configure = () => {
+const Configure = ({ data, setData }: { data: any; setData: any }) => {
   const editNode = useSelector((state: RootState) => state.node.editNode);
-  console.log(editNode);
   if (editNode.type === "google-sheets")
     return (
       <div className="flex flex-col text-sm gap-2">
         <div className="flex flex-col gap-2">
           <div>Spreadsheet</div>
-          <Select>
+          <Select
+            value={data?.spreadsheet || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                spreadsheet: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select spreadsheet" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">Sheet 1</SelectItem>
+                <SelectItem value="spreadsheet_1">Spreadsheet 1</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -34,13 +41,21 @@ const Configure = () => {
 
         <div className="flex flex-col gap-2">
           <div>Worksheets</div>
-          <Select>
+          <Select
+            value={data?.worksheet || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                worksheet: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select worksheet" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">Sheet 1</SelectItem>
+                <SelectItem value="worksheet_1">Worksheet 1</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -52,13 +67,21 @@ const Configure = () => {
       <div className="flex flex-col text-sm gap-2">
         <div className="flex flex-col gap-2">
           <div>Channel</div>
-          <Select>
+          <Select
+            value={data?.channel || ""}
+            onValueChange={(value) =>
+              setData({
+                ...data,
+                channel: value,
+              })
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select channel" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">Channel 1</SelectItem>
+                <SelectItem value="channel_1">Channel 1</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -66,11 +89,30 @@ const Configure = () => {
 
         <div className="flex flex-col gap-2">
           <div>Bot name</div>
-          <Input placeholder="Enter bot name" />
+          <Input
+            value={data?.botName || ""}
+            onChange={(e) =>
+              setData({
+                ...data,
+                botName: e.target.value,
+              })
+            }
+            placeholder="Enter bot name"
+          />
         </div>
         <div className="flex flex-col gap-2">
           <div>Message text</div>
-          <Textarea rows={4} placeholder="Enter message text" />
+          <Textarea
+            value={data?.messageText}
+            onChange={(e) =>
+              setData({
+                ...data,
+                messageText: e.target.value,
+              })
+            }
+            rows={4}
+            placeholder="Enter message text"
+          />
         </div>
       </div>
     );

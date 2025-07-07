@@ -21,9 +21,16 @@ import { toast } from "sonner";
 import Chatbox from "@/components/chatbox";
 import GraphBoard from "@/components/graph-board";
 import EditNode from "@/components/edit-node";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { initNodes } from "@/app/slices/nodeSlice";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
+  const dispatch = useDispatch();
+  const reduxNodes = useSelector((state: RootState) => state.node.nodes);
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([
     {
       id: "graph_board",
@@ -46,9 +53,8 @@ const WorkflowPage = () => {
       refreshInterval: 0, // No polling
     }
   );
-  const handleAddNode = (node: Node) => {
-    setNodes((prevNodes) => [...prevNodes, node]);
-  };
+  console.log(data);
+
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
       ...connection,
@@ -62,10 +68,9 @@ const WorkflowPage = () => {
   }, []);
 
   const onSave = async () => {
-    const axios = require("axios");
     const response = await axios.patch("/api/workflow", {
-      nodes,
-      edges,
+      nodes: reduxNodes,
+      edges: [],
       name,
       workflowId,
     });
@@ -75,9 +80,10 @@ const WorkflowPage = () => {
   };
   useEffect(() => {
     if (data) {
-      // setNodes(data.node || []);
-      // setEdges(data.edge || []);
       setName(data.name);
+      if (data.node && data.node.length > 0) {
+        dispatch(initNodes(data.node));
+      }
     }
   }, [data]);
   if (!data || isLoading) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import Setup from "@/components/setup";
@@ -6,14 +6,41 @@ import Configure from "@/components/configure";
 import Test from "@/components/test";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
-import { resetEditNode, setEditNode } from "@/app/slices/nodeSlice";
+import { resetEditNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Button } from "@/components/ui/button";
+import { updateNode } from "@/app/slices/nodeSlice";
 const EditNode = () => {
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = React.useState("setup");
   const node = useSelector((state: RootState) => state.node);
+  const [activeTab, setActiveTab] = React.useState("setup");
+  const [data, setData] = React.useState({});
+  useEffect(() => {
+    if (node.editNode.id) {
+      const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
+      setData({
+        ...nodeData?.data,
+        id: node.editNode.id,
+        type: node.editNode.type,
+      });
+    }
+  }, [node.editNode.id]);
+
+  const handleContinue = () => {
+    console.log(data, node.nodes);
+    dispatch(updateNode({ id: node.editNode.id, data }));
+    if (activeTab === "setup") {
+      setActiveTab("configure");
+    }
+    if (activeTab === "configure") {
+      setActiveTab("test");
+    }
+    if (activeTab === "test") {
+      console.log(node, data);
+    }
+  };
+
   if (!node.editNode.type) return;
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] bg-white shadow border-2 border-blue-800 rounded">
@@ -28,7 +55,10 @@ const EditNode = () => {
               className={cn("hover:text-blue-800 cursor-pointer p-2", {
                 "text-blue-800 border-b border-blue-800": activeTab === tab,
               })}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                dispatch(updateNode({ id: node.editNode.id, data }));
+                setActiveTab(tab);
+              }}
             >
               {tab}
             </button>
@@ -40,19 +70,26 @@ const EditNode = () => {
             className={cn("hover:text-blue-800 cursor-pointer p-2", {
               "text-blue-800 border-b border-blue-800": activeTab === "test",
             })}
-            onClick={() => setActiveTab("test")}
+            onClick={() => {
+              dispatch(updateNode({ id: node.editNode.id, data }));
+              setActiveTab("test");
+            }}
           >
             Test
           </button>
         </div>
       </div>
       <div className="p-2 flex-1 overflow-y-auto">
-        {activeTab === "setup" && <Setup />}
-        {activeTab === "configure" && <Configure />}
+        {activeTab === "setup" && <Setup data={data} setData={setData} />}
+        {activeTab === "configure" && (
+          <Configure data={data} setData={setData} />
+        )}
         {activeTab === "test" && <Test />}
       </div>
       <div className="p-2">
-        <Button className="w-full bg-blue-800">Continue</Button>
+        <Button className="w-full bg-blue-800" onClick={handleContinue}>
+          Continue
+        </Button>
       </div>
     </div>
   );

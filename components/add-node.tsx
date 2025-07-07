@@ -15,12 +15,9 @@ import { RootState } from "@/app/store/store";
 import { useDispatch } from "react-redux";
 import { setAddNodeModal } from "@/app/slices/nodeSlice";
 import { Node } from "@/types/node";
+import { addNode } from "@/app/slices/nodeSlice";
 
-interface AddNodeProps {
-  handleAddNode: (node: Node) => void;
-}
-
-const AddNode = ({ handleAddNode }: AddNodeProps) => {
+const AddNode = () => {
   const addNodeModal = useSelector(
     (state: RootState) => state.node.addNodeModal
   );
@@ -39,7 +36,9 @@ const AddNode = ({ handleAddNode }: AddNodeProps) => {
               <Button
                 key={node.id}
                 onClick={() => {
-                  handleAddNode(node);
+                  dispatch(
+                    addNode({ ...node, id: new Date().getTime().toString() })
+                  );
                   setOpen(false);
                 }}
                 className="px-4 py-2 rounded border"
