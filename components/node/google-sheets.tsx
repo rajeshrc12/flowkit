@@ -23,7 +23,7 @@ const GoogleSheets = ({
         }
       )}
       onClick={() => {
-        dispatch(setEditNode({ type: "google-sheets", id }));
+        dispatch(setEditNode({ type: "google_sheets", id }));
       }}
     >
       <div className="flex justify-between">

@@ -7,7 +7,7 @@ import { Node } from "@/types/node";
 
 const GraphBoard = () => {
   const nodes = useSelector((state: RootState) => state.node.nodes);
-  console.log(nodes);
+  // console.log(nodes);
   return (
     <div>
       <div>

@@ -16,10 +16,10 @@ const WorkflowPage = () => {
     refreshInterval: 0, // No polling
   });
   console.clear();
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   const createWorkflow = async () => {
     const response = await axios.post("/api/workflow");
-    console.log(response.data);
+    // console.log(response.data);
     router.push(`/workflow/${response.data.workflow.id}`);
   };
 

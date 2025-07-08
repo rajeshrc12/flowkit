@@ -12,24 +12,35 @@ import { RootState } from "@/app/store/store";
 import { Button } from "@/components/ui/button";
 import { updateNode } from "@/app/slices/nodeSlice";
 import { NodeData } from "@/types/node";
+import useSWR from "swr";
+import { fetcher } from "@/utils/api";
+
 const EditNode = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
   const [activeTab, setActiveTab] = React.useState("setup");
-  const [data, setData] = React.useState<NodeData>({});
+  const [data, setData] = React.useState<NodeData & { credentials: any }>();
+  const { data: credentials } = useSWR(
+    node?.editNode?.type ? `/api/credential/${node.editNode.type}` : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: 0, // No polling
+    }
+  );
   useEffect(() => {
-    if (node.editNode.id) {
+    if (node.editNode.id && credentials) {
       const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
       setData({
         ...nodeData?.data,
         id: node.editNode.id,
         type: node.editNode.type,
+        credentials,
       });
     }
-  }, [node.editNode.id]);
-
+  }, [node.editNode.id, credentials]);
   const handleContinue = () => {
-    console.log(data, node.nodes);
     dispatch(updateNode({ id: node.editNode.id, data }));
     if (activeTab === "setup") {
       setActiveTab("configure");
@@ -38,11 +49,11 @@ const EditNode = () => {
       setActiveTab("test");
     }
     if (activeTab === "test") {
-      console.log(node, data);
+      // console.log(node, data);
     }
   };
 
-  if (!node.editNode.type) return;
+  if (!node.editNode.type && !credentials) return;
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] bg-white shadow border-2 border-blue-800 rounded">
       <div className="flex justify-between bg-blue-50 p-2">

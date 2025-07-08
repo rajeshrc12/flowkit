@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SiGooglesheets, SiSlack } from "react-icons/si";
 import {
   Select,
@@ -13,7 +13,8 @@ import { RootState } from "@/app/store/store";
 
 const Setup = ({ data, setData }: { data: any; setData: any }) => {
   const editNode = useSelector((state: RootState) => state.node.editNode);
-  if (editNode.type === "google-sheets")
+
+  if (editNode.type === "google_sheets")
     return (
       <div className="flex flex-col text-sm gap-2">
         <div className="flex flex-col gap-2">
@@ -65,11 +66,20 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
               <SelectValue placeholder="Select account" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="example@gmail.com">
-                  example@gmail.com
+              {data?.credentials?.length > 0 ? (
+                data?.credentials?.map((credential: any) => (
+                  <SelectItem key={credential.id} value={credential.id}>
+                    {credential.name}
+                    <span className="ml-2 text-xs text-gray-500">
+                      {credential.email}
+                    </span>
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem disabled value="no-credentials">
+                  No credentials found
                 </SelectItem>
-              </SelectGroup>
+              )}
             </SelectContent>
           </Select>
         </div>

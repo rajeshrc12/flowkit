@@ -51,7 +51,7 @@ const GeminiCredential = () => {
       nodeId: editNode.id,
     });
     dispatch(resetEditNode());
-    console.log(response1.data, response2.data);
+    // console.log(response1.data, response2.data);
   };
   if (!data || isLoading || !editNode) {
     return <p>Loading...</p>;

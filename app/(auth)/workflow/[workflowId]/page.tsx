@@ -52,7 +52,7 @@ const WorkflowPage = () => {
       refreshInterval: 0, // No polling
     }
   );
-  console.log(data);
+  // console.log(data);
 
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
@@ -75,7 +75,7 @@ const WorkflowPage = () => {
     });
     mutate();
     toast("Workflow has been saved");
-    console.log(response.data);
+    // console.log(response.data);
   };
   useEffect(() => {
     if (data) {

@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       workflow_id: workflowId,
       chat_message,
     });
-    console.log(response);
+    // console.log(response);
     return Response.json(response.data.chat_message, { status: 201 });
   } catch (error) {
     console.error("Error creating credential:", error);

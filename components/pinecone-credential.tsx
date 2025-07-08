@@ -65,7 +65,7 @@ const PineconeCredential = () => {
       nodeId: editNode.id,
     });
     dispatch(resetEditNode());
-    console.log(response1.data, response2.data);
+    // console.log(response1.data, response2.data);
   };
   if (!data || isLoading || !editNode || !indexData || indexLoading) {
     return <p>Loading...</p>;

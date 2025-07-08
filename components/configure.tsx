@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -11,10 +11,24 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import useSWR from "swr";
+import { fetcher } from "@/utils/api";
 
 const Configure = ({ data, setData }: { data: any; setData: any }) => {
   const editNode = useSelector((state: RootState) => state.node.editNode);
-  if (editNode.type === "google-sheets")
+  const { data: sheets } = useSWR(
+    data.account ? `/api/google/sheets/${data.account}` : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: 0, // No polling
+    }
+  );
+  console.clear();
+  console.log(sheets, data);
+  if (!sheets) return;
+  if (editNode.type === "google_sheets")
     return (
       <div className="flex flex-col text-sm gap-2">
         <div className="flex flex-col gap-2">
@@ -32,9 +46,11 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
               <SelectValue placeholder="Select spreadsheet" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="spreadsheet_1">Spreadsheet 1</SelectItem>
-              </SelectGroup>
+              {sheets.map((sheet: any) => (
+                <SelectItem key={sheet.id} value={sheet.id}>
+                  {sheet.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -54,9 +70,13 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
               <SelectValue placeholder="Select worksheet" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="worksheet_1">Worksheet 1</SelectItem>
-              </SelectGroup>
+              {sheets
+                ?.find((sheet: any) => sheet.id === data.spreadsheet)
+                ?.sheets?.map((sheet: any) => (
+                  <SelectItem key={sheet} value={sheet}>
+                    {sheet}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

@@ -68,9 +68,8 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
                 <SelectValue placeholder="Credential Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="openai">OpenAI</SelectItem>
-                <SelectItem value="gemini">Gemini</SelectItem>
-                <SelectItem value="pinecone">Pinecone</SelectItem>
+                <SelectItem value="google_sheets">Google Sheets</SelectItem>
+                <SelectItem value="slack">Slack</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -87,29 +86,22 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
             <DialogDescription>Add Account Details</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2 w-full">
-            <div className="grid items-center gap-3">
-              <Label htmlFor="apiKey">Name</Label>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-                id="name"
-                placeholder="Name"
-              />
-            </div>
-            <div className="grid items-center gap-3">
-              <Label htmlFor="apiKey">API Key</Label>
-              <Input
-                value={data.apiKey}
-                onChange={(e) => setData({ ...data, apiKey: e.target.value })}
-                type="text"
-                id="apiKey"
-                placeholder="API Key"
-              />
+            <div>
+              <Button
+                onClick={() =>
+                  window.open(
+                    "/api/google/auth",
+                    "_blank",
+                    "width=500,height=600"
+                  )
+                }
+              >
+                Connect with Google
+              </Button>
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={createCredential}>Create</Button>
+            <Button onClick={createCredential}>Save</Button>
             <DialogClose>Cancel</DialogClose>
           </DialogFooter>
         </DialogContent>
