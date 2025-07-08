@@ -11,11 +11,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Button } from "@/components/ui/button";
 import { updateNode } from "@/app/slices/nodeSlice";
+import { NodeData } from "@/types/node";
 const EditNode = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
   const [activeTab, setActiveTab] = React.useState("setup");
-  const [data, setData] = React.useState({});
+  const [data, setData] = React.useState<NodeData>({});
   useEffect(() => {
     if (node.editNode.id) {
       const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
@@ -45,7 +46,7 @@ const EditNode = () => {
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] bg-white shadow border-2 border-blue-800 rounded">
       <div className="flex justify-between bg-blue-50 p-2">
-        <div>Edit Node</div>
+        <div>{data?.triggerEvent || data?.actionEvent || "Select event"}</div>
         <IoMdClose color="black" onClick={() => dispatch(resetEditNode())} />
       </div>
       <div className="flex gap-2 text-sm border-b font-medium">

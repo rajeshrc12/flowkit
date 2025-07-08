@@ -42,7 +42,7 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">
+                <SelectItem value="New or updated spreadsheet row">
                   New or updated spreadsheet row
                 </SelectItem>
               </SelectGroup>
@@ -104,7 +104,9 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="0">Send channel message</SelectItem>
+                <SelectItem value="Send channel message">
+                  Send channel message
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

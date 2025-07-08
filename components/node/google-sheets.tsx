@@ -6,7 +6,12 @@ import { setEditNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { cn } from "@/lib/utils";
-const GoogleSheets = ({ index, id }: { index: number; id: string } & any) => {
+import { NodeData } from "@/types/node";
+const GoogleSheets = ({
+  index,
+  id,
+  data,
+}: { index: number; id: string; data?: NodeData } & any) => {
   const dispatch = useDispatch();
   const editNode = useSelector((state: RootState) => state.node.editNode);
   return (
@@ -14,8 +19,7 @@ const GoogleSheets = ({ index, id }: { index: number; id: string } & any) => {
       className={cn(
         "w-[300px] shadow-md bg-white rounded-md p-3 flex flex-col gap-2 cursor-pointer",
         {
-          "bg-blue-50 border border-blue-800":
-            editNode.type === "google-sheets",
+          "bg-blue-50 border border-blue-800": editNode.id === id,
         }
       )}
       onClick={() => {
@@ -29,7 +33,9 @@ const GoogleSheets = ({ index, id }: { index: number; id: string } & any) => {
         </div>
         <div></div>
       </div>
-      <div>{index}. New or updated spreadsheet row</div>
+      <div>
+        {index}. {data?.triggerEvent || "Select event"}
+      </div>
     </div>
   );
 };

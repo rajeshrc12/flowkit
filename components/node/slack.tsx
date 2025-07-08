@@ -6,7 +6,12 @@ import { setEditNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { cn } from "@/lib/utils";
-const Slack = ({ index, id }: { index: number; id: string } & any) => {
+import { NodeData } from "@/types/node";
+const Slack = ({
+  index,
+  id,
+  data,
+}: { index: number; id: string; data?: NodeData } & any) => {
   const dispatch = useDispatch();
   const editNode = useSelector((state: RootState) => state.node.editNode);
   return (
@@ -17,7 +22,7 @@ const Slack = ({ index, id }: { index: number; id: string } & any) => {
       className={cn(
         "w-[300px] shadow-md bg-white rounded-md p-3 flex flex-col gap-2 cursor-pointer",
         {
-          "bg-blue-50 border border-blue-800": editNode.type === "slack",
+          "bg-blue-50 border border-blue-800": editNode.id === id,
         }
       )}
     >
@@ -28,7 +33,9 @@ const Slack = ({ index, id }: { index: number; id: string } & any) => {
         </div>
         <div></div>
       </div>
-      <div>{index}. New or updated spreadsheet row</div>
+      <div>
+        {index}. {data?.actionEvent || "Select action"}
+      </div>
     </div>
   );
 };

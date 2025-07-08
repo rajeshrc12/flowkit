@@ -3,6 +3,7 @@ import AddNode from "@/components/add-node";
 import BaseNode from "@/components/base-node";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
+import { Node } from "@/types/node";
 
 const GraphBoard = () => {
   const nodes = useSelector((state: RootState) => state.node.nodes);
@@ -10,8 +11,9 @@ const GraphBoard = () => {
   return (
     <div>
       <div>
-        {nodes.map((node, index) => (
+        {nodes.map((node: Node, index: number) => (
           <BaseNode
+            data={node.data}
             type={node.type}
             index={index + 1}
             key={node.id}

@@ -18,7 +18,6 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import { toast } from "sonner";
-import Chatbox from "@/components/chatbox";
 import GraphBoard from "@/components/graph-board";
 import EditNode from "@/components/edit-node";
 import axios from "axios";
