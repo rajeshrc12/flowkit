@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
   } = (await auth()) as Session;
 
   try {
+    // Step 1: Exchange code for access_token
     const { data } = await axios.post(
       "https://slack.com/api/oauth.v2.access",
       new URLSearchParams({
@@ -34,21 +35,50 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect("/?error=oauth_failed");
     }
 
+    const accessToken = data.access_token;
+    const userId = data.authed_user?.id;
+
+    let userEmail: string | undefined = undefined;
+
+    // Step 2: Fetch user email from Slack
+    if (accessToken && userId) {
+      const userInfoRes = await axios.get("https://slack.com/api/users.info", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          user: userId,
+        },
+      });
+
+      if (userInfoRes.data.ok) {
+        userEmail = userInfoRes.data.user?.profile?.email;
+      } else {
+        console.warn("Slack user info error:", userInfoRes.data);
+      }
+    }
+
+    // Step 3: Store in DB with email
     await prisma.credential.create({
       data: {
         name: "Slack",
         type: "slack",
         userId: id,
-        data,
+        data: {
+          ...data,
+          email: userEmail, // store email inside data
+        },
       },
     });
 
+    // Response page
     const html = `
       <html>
         <head><title>Authentication Completed</title></head>
         <body style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;">
           <div>
             <h2>Slack Authentication Successful</h2>
+            <p>Email: <strong>${userEmail ?? "Unknown"}</strong></p>
             <p>You may now close this window.</p>
           </div>
         </body>
@@ -61,7 +91,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Slack OAuth Axios error:", error);
+    console.error("Slack OAuth error:", error);
     return NextResponse.redirect("/?error=axios_failed");
   }
 }
