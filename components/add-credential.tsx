@@ -86,19 +86,36 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
             <DialogDescription>Add Account Details</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2 w-full">
-            <div>
-              <Button
-                onClick={() =>
-                  window.open(
-                    "/api/google/auth",
-                    "_blank",
-                    "width=500,height=600"
-                  )
-                }
-              >
-                Connect with Google
-              </Button>
-            </div>
+            {type === "google_sheets" && (
+              <div>
+                <Button
+                  onClick={() =>
+                    window.open(
+                      "/api/google/auth",
+                      "_blank",
+                      "width=500,height=600"
+                    )
+                  }
+                >
+                  Connect with Google
+                </Button>
+              </div>
+            )}
+            {type === "slack" && (
+              <div>
+                <Button
+                  onClick={() =>
+                    window.open(
+                      "/api/slack/auth",
+                      "_blank",
+                      "width=500,height=600"
+                    )
+                  }
+                >
+                  Connect with Slack
+                </Button>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button onClick={createCredential}>Save</Button>
