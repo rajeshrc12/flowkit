@@ -1,45 +1,33 @@
 import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import Setup from "@/components/setup";
-import Configure from "@/components/configure";
-import Test from "@/components/test";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
-import { resetEditNode } from "@/app/slices/nodeSlice";
+import { resetEditNode, updateNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Button } from "@/components/ui/button";
-import { updateNode } from "@/app/slices/nodeSlice";
+import Setup from "@/components/edit-node/google-sheets/setup";
+import Configure from "@/components/edit-node/google-sheets/configure";
+import Test from "@/components/edit-node/google-sheets/test";
 import { NodeData } from "@/types/node";
-import useSWR from "swr";
-import { fetcher } from "@/utils/api";
 
-const EditNode = () => {
+const GoogleSheetsIndex = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
   const [activeTab, setActiveTab] = React.useState("setup");
-  const [data, setData] = React.useState<NodeData & { credentials: any }>();
-  const { data: credentials } = useSWR(
-    node?.editNode?.type ? `/api/credential/${node.editNode.type}` : null,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshInterval: 0, // No polling
-    }
-  );
+  const [data, setData] = React.useState<NodeData>();
   useEffect(() => {
-    if (node.editNode.id && credentials) {
+    if (node.editNode.id) {
       const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
       setData({
         ...nodeData?.data,
         id: node.editNode.id,
         type: node.editNode.type,
-        credentials,
       });
     }
-  }, [node.editNode.id, credentials]);
+  }, [node.editNode.id]);
+
   const handleContinue = () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
     if (activeTab === "setup") {
@@ -49,15 +37,12 @@ const EditNode = () => {
       setActiveTab("test");
     }
     if (activeTab === "test") {
-      // console.log(node, data);
     }
   };
-
-  if (!node.editNode.type && !credentials) return;
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] bg-white shadow border-2 border-blue-800 rounded">
       <div className="flex justify-between bg-blue-50 p-2">
-        <div>{data?.triggerEvent || data?.actionEvent || "Select event"}</div>
+        <div>{data?.triggerEvent || "Select event"}</div>
         <IoMdClose color="black" onClick={() => dispatch(resetEditNode())} />
       </div>
       <div className="flex gap-2 text-sm border-b font-medium">
@@ -107,4 +92,4 @@ const EditNode = () => {
   );
 };
 
-export default EditNode;
+export default GoogleSheetsIndex;
