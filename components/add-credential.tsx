@@ -17,9 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { FiPlus } from "react-icons/fi";
 
 const AddCredential = ({ mutate }: { mutate: () => void }) => {
   const [typeDialog, setTypeDialog] = useState(false);
@@ -56,7 +55,10 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
   };
   return (
     <div>
-      <Button onClick={handleCreateCredentialType}>Create Credential</Button>
+      <Button onClick={handleCreateCredentialType}>
+        <FiPlus />
+        Add connection
+      </Button>
       <Dialog open={typeDialog} onOpenChange={setTypeDialog}>
         <DialogContent>
           <DialogHeader>
