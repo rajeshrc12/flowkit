@@ -5,7 +5,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
-import { Workflow } from "@prisma/client";
 import {
   Table,
   TableBody,
@@ -16,12 +15,17 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CiMenuKebab } from "react-icons/ci";
-import { SiGooglesheets } from "react-icons/si";
-import { FiSlack } from "react-icons/fi";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Node } from "@/types/node";
 import NodeIcon from "@/components/node-icon";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { GiPencil } from "react-icons/gi";
+import { FiEye, FiTrash } from "react-icons/fi";
 
 const WorkflowPage = () => {
   const router = useRouter();
@@ -30,9 +34,12 @@ const WorkflowPage = () => {
     revalidateOnReconnect: false,
     refreshInterval: 0, // No polling
   });
+  const openWorkflow = (workflowId: string) => {
+    router.push(`/workflow/${workflowId}`);
+  };
   const createWorkflow = async () => {
     const response = await axios.post("/api/workflow");
-    router.push(`/workflow/${response.data.workflow.id}`);
+    openWorkflow(response.data.workflow.id);
   };
 
   return (
@@ -83,7 +90,12 @@ const WorkflowPage = () => {
                 ))
               : data?.workflows?.map((workflow: any) => (
                   <TableRow key={workflow.id}>
-                    <TableCell className="py-4">{workflow.name}</TableCell>
+                    <TableCell
+                      className="cursor-pointer py-4"
+                      onClick={() => openWorkflow(workflow.id)}
+                    >
+                      {workflow.name}
+                    </TableCell>
                     <TableCell className="py-4 flex items-center">
                       {workflow?.node?.length > 0 ? (
                         workflow?.node?.map((node: Node) => (
@@ -105,7 +117,38 @@ const WorkflowPage = () => {
                       <Switch />
                     </TableCell>
                     <TableCell>
-                      <CiMenuKebab />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button className="cursor-pointer" variant="ghost">
+                            <CiMenuKebab />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-40 p-1 m-0" align="end">
+                          <div className="flex flex-col gap-2">
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <FiEye />
+                              <span>View</span>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <GiPencil />
+                              <span>Rename</span>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <FiTrash />
+                              <span>Delete</span>
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </TableCell>
                   </TableRow>
                 ))}

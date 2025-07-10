@@ -14,10 +14,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CiMenuKebab } from "react-icons/ci";
-import { SiGooglesheets } from "react-icons/si";
-import { FiSlack } from "react-icons/fi";
 import { Skeleton } from "@/components/ui/skeleton";
 import NodeIcon from "@/components/node-icon";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { FiTrash } from "react-icons/fi";
 
 const CredentialPage = () => {
   const { data, isLoading, mutate } = useSWR(`/api/credential`, fetcher, {
@@ -87,7 +92,24 @@ const CredentialPage = () => {
                     <TableCell>{credential.type}</TableCell>
                     <TableCell>{new Date().toLocaleString()}</TableCell>
                     <TableCell>
-                      <CiMenuKebab />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button className="cursor-pointer" variant="ghost">
+                            <CiMenuKebab />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-40 p-1 m-0" align="end">
+                          <div className="flex flex-col gap-2">
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <FiTrash />
+                              <span>Delete</span>
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </TableCell>
                   </TableRow>
                 )
