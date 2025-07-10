@@ -17,6 +17,7 @@ import { CiMenuKebab } from "react-icons/ci";
 import { SiGooglesheets } from "react-icons/si";
 import { FiSlack } from "react-icons/fi";
 import { Skeleton } from "@/components/ui/skeleton";
+import NodeIcon from "@/components/node-icon";
 
 const CredentialPage = () => {
   const { data, isLoading, mutate } = useSWR(`/api/credential`, fetcher, {
@@ -74,10 +75,7 @@ const CredentialPage = () => {
                   <TableRow key={credential.id}>
                     <TableCell className="flex gap-4 m-2">
                       <span>
-                        {credential.type === "google_sheets" && (
-                          <SiGooglesheets size={30} color="green" />
-                        )}
-                        {credential.type === "slack" && <FiSlack size={30} />}
+                        <NodeIcon name={credential.type} size={30} />
                       </span>
                       <span className="flex flex-col gap-1">
                         <span>{credential.name}</span>

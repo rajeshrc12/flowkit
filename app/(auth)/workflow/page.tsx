@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import { Workflow } from "@prisma/client";
-import { AiFillEdit } from "react-icons/ai";
 import {
   Table,
   TableBody,
@@ -20,10 +19,13 @@ import { CiMenuKebab } from "react-icons/ci";
 import { SiGooglesheets } from "react-icons/si";
 import { FiSlack } from "react-icons/fi";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Node } from "@/types/node";
+import NodeIcon from "@/components/node-icon";
 
 const WorkflowPage = () => {
   const router = useRouter();
-  const { data, error, isLoading, mutate } = useSWR(`/api/workflow`, fetcher, {
+  const { data, isLoading } = useSWR(`/api/workflow`, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0, // No polling
@@ -79,15 +81,29 @@ const WorkflowPage = () => {
                     </TableCell>
                   </TableRow>
                 ))
-              : data?.workflows?.map((workflow: Workflow) => (
+              : data?.workflows?.map((workflow: any) => (
                   <TableRow key={workflow.id}>
                     <TableCell className="py-4">{workflow.name}</TableCell>
                     <TableCell className="py-4 flex items-center">
-                      <SiGooglesheets />
-                      <FiSlack />
+                      {workflow?.node?.length > 0 ? (
+                        workflow?.node?.map((node: Node) => (
+                          <span
+                            key={node.id}
+                            className="border rounded h-7 w-7 flex justify-center items-center"
+                          >
+                            <NodeIcon name={node.type} size={15} />
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground text-xs">
+                          No Apps
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>{new Date().toLocaleString()}</TableCell>
-                    <TableCell>Active</TableCell>
+                    <TableCell>
+                      <Switch />
+                    </TableCell>
                     <TableCell>
                       <CiMenuKebab />
                     </TableCell>
