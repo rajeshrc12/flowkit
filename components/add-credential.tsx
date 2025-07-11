@@ -34,9 +34,9 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
     if (type === "google_sheets") {
       window.open("/api/google/auth", "_blank", "width=500,height=600");
     }
-    if (type === "slack") {
-      window.open("/api/slack/auth", "_blank", "width=500,height=600");
-    }
+    // if (type === "slack") {
+    //   window.open("/api/slack/auth", "_blank", "width=500,height=600");
+    // }
     setTypeDialog((prev) => !prev);
   };
   return (
@@ -57,7 +57,7 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="google_sheets">Google Sheets</SelectItem>
-                <SelectItem value="slack">Slack</SelectItem>
+                {/* <SelectItem value="slack">Slack</SelectItem> */}
               </SelectContent>
             </Select>
           </div>

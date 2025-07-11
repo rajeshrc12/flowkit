@@ -4,12 +4,23 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetcher } from "@/utils/api";
 import useSWR from "swr";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const { data } = useSWR(`/api/me`, fetcher);
+  const router = useRouter();
   return (
     <div className="flex justify-between border-b p-4">
-      <div className="font-bold text-2xl">Flowkit</div>
+      <div>
+        <Button
+          variant="ghost"
+          className="font-bold text-2xl "
+          onClick={() => router.push("/")}
+        >
+          Flowkit
+        </Button>
+      </div>
       <Popover>
         <PopoverTrigger asChild className="cursor-pointer">
           <Avatar>

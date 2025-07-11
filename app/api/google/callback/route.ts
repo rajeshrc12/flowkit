@@ -6,6 +6,7 @@ import { Session } from "next-auth";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
+  console.log(url);
   const code = url.searchParams.get("code");
   const {
     user: { id },
