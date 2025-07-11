@@ -15,17 +15,15 @@ export default function ActiveLink({ href, icon, name }: ActiveLinkProps) {
   return (
     <Link href={href} passHref>
       <Button
-        className={`w-full px-4 py-3 rounded-md transition-all ${
+        className={`w-full px-2 py-3 rounded-md transition-all flex justify-start gap-4 ${
           isActive
             ? "bg-gray-100 font-medium"
             : "text-gray-600 hover:bg-gray-100"
         }`}
         variant="ghost"
       >
-        <span className="flex items-center gap-3">
-          <span>{icon}</span>
-          {name}
-        </span>
+        <span>{icon}</span>
+        <span>{name}</span>
       </Button>
     </Link>
   );

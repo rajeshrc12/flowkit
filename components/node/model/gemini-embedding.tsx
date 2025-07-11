@@ -16,7 +16,7 @@ const GeminiEmbedding = ({ id, data }: { id: string; data: any }) => {
       <AiOutlineEdit
         className="cursor-pointer absolute top-[-20px] right-0"
         onClick={() => {
-          console.log(id);
+          // console.log(id);
           dispatch(
             setEditNode({
               type: "geminiEmbedding",

@@ -38,11 +38,11 @@ try {
     globalForMongo._mongoClient = client;
     globalForMongo._mongoDb = db;
 
-    console.log("✅ MongoDB connected to:", db.databaseName);
+    // console.log("✅ MongoDB connected to:", db.databaseName);
   } else {
     client = globalForMongo._mongoClient;
     db = globalForMongo._mongoDb;
-    console.log("♻️ Reusing existing MongoDB connection:", db.databaseName);
+    // console.log("♻️ Reusing existing MongoDB connection:", db.databaseName);
   }
 } catch (error) {
   console.error("❌ MongoDB connection error:", error);

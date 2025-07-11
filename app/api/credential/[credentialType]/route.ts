@@ -14,7 +14,20 @@ export async function GET(req: Request) {
     // Fetch video data from the database using Prisma
     const credentials = await prisma.credential.findMany({
       where: { type: credentialType, userId: id },
+      include: {
+        User: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
+    const flattened = credentials.map(({ User, ...rest }) => ({
+      id: rest.id,
+      name: User?.name,
+      email: User?.email,
+    }));
 
     // If video does not exist, return an error
     if (!credentials) {
@@ -22,7 +35,7 @@ export async function GET(req: Request) {
     }
 
     // Return the signed URL
-    return Response.json({ credentials }, { status: 200 });
+    return Response.json(flattened, { status: 200 });
   } catch (error) {
     console.error("Error fetching credentials:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });

@@ -37,7 +37,7 @@ export async function GET() {
     const credentials = await prisma.credential.findMany({
       where: { userId: id },
     });
-    console.log(credentials);
+    // console.log(credentials);
     return Response.json({ credentials }, { status: 200 });
   } catch (error) {
     console.error("Error fetching credentials:", error);

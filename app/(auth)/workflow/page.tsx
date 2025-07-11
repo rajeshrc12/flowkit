@@ -5,53 +5,155 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/api";
-import { Workflow } from "@prisma/client";
-import { AiFillEdit } from "react-icons/ai";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CiMenuKebab } from "react-icons/ci";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Node } from "@/types/node";
+import NodeIcon from "@/components/node-icon";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { GiPencil } from "react-icons/gi";
+import { FiEye, FiTrash } from "react-icons/fi";
 
 const WorkflowPage = () => {
   const router = useRouter();
-  const { data, error, isLoading, mutate } = useSWR(`/api/workflow`, fetcher, {
+  const { data, isLoading } = useSWR(`/api/workflow`, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0, // No polling
   });
-  console.clear();
-  console.log(JSON.stringify(data));
+  const openWorkflow = (workflowId: string) => {
+    router.push(`/editor/${workflowId}`);
+  };
   const createWorkflow = async () => {
     const response = await axios.post("/api/workflow");
-    console.log(response.data);
-    router.push(`/workflow/${response.data.workflow.id}`);
+    openWorkflow(response.data.workflow.id);
   };
 
-  if (!data || isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error while loading workflows...</p>;
-  }
-
   return (
-    <div className="pt-10 px-2">
+    <div className="p-16 flex flex-col gap-2">
       <div className="flex justify-between">
-        <div className="font-bold text-2xl"></div>
+        <div className="font-bold text-2xl">Flows</div>
         <Button onClick={createWorkflow}>Create Workflow</Button>
       </div>
+      <div className="flex justify-end">
+        <div>
+          <Input className="border border-[#b5b2aa]" placeholder="Search" />
+        </div>
+      </div>
       <div className="mt-2 flex flex-col gap-2">
-        {data?.workflows?.map((workflow: Workflow) => (
-          <div
-            className="border p-2 flex justify-between rounded-md"
-            key={workflow.id}
-          >
-            <div>{workflow.name}</div>
-            <Button
-              onClick={() => router.push(`/workflow/${workflow.id}`)}
-              variant="outline"
-            >
-              <AiFillEdit />
-            </Button>
-          </div>
-        ))}
+        <Table className="border">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Apps</TableHead>
+              <TableHead>Last Modified</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <TableRow key={`skeleton-${i}`}>
+                    <TableCell className="py-4">
+                      <div className="flex items-center gap-4">
+                        <Skeleton className="w-8 h-8 rounded-full" />
+                        <div className="flex flex-col gap-2">
+                          <Skeleton className="w-32 h-4" />
+                          <Skeleton className="w-24 h-3" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-4">
+                      <Skeleton className="w-20 h-4" />
+                    </TableCell>
+                    <TableCell className="py-4">
+                      <Skeleton className="w-28 h-4" />
+                    </TableCell>
+                    <TableCell className="py-4">
+                      <Skeleton className="w-6 h-4" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : data?.workflows?.map((workflow: any) => (
+                  <TableRow key={workflow.id}>
+                    <TableCell
+                      className="cursor-pointer py-4"
+                      onClick={() => openWorkflow(workflow.id)}
+                    >
+                      {workflow.name}
+                    </TableCell>
+                    <TableCell className="py-4 flex items-center">
+                      {workflow?.node?.length > 0 ? (
+                        workflow?.node?.map((node: Node) => (
+                          <span
+                            key={node.id}
+                            className="border rounded h-7 w-7 flex justify-center items-center"
+                          >
+                            <NodeIcon name={node.type} size={15} />
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground text-xs">
+                          No Apps
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell>{new Date().toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Switch />
+                    </TableCell>
+                    <TableCell>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button className="cursor-pointer" variant="ghost">
+                            <CiMenuKebab />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-40 p-1 m-0" align="end">
+                          <div className="flex flex-col gap-2">
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <FiEye />
+                              <span>View</span>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <GiPencil />
+                              <span>Rename</span>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="flex items-center justify-start gap-4"
+                            >
+                              <FiTrash />
+                              <span>Delete</span>
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

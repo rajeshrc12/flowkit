@@ -89,7 +89,7 @@ export async function GET() {
     const workflows = await prisma.workflow.findMany({
       where: { userId: id },
     });
-    console.log(workflows);
+    // console.log(workflows);
     return Response.json({ workflows }, { status: 200 });
   } catch (error) {
     console.error("Error fetching workflows:", error);

@@ -42,7 +42,7 @@ const Chatbox = () => {
         workflowId,
         chat_message: chats,
       });
-      console.log(response.data);
+      // console.log(response.data);
       setChats(response.data);
       setIssChatsLoading(false);
     }

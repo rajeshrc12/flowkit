@@ -1,42 +1,36 @@
-export const nodes = [
+import { Node } from "@/types/node";
+
+export const nodes: Node[] = [
   {
-    type: "chat_node",
-    position: { x: 100, y: 100 },
-    data: { label: "Chat", isStart: true, name: "chat_node", type: "root" },
-  },
-  {
-    type: "agent",
-    position: { x: 200, y: 200 },
-    data: { label: "Agent", isStart: false, name: "agent", type: "root" },
-  },
-  {
-    type: "openai",
-    position: { x: 300, y: 300 },
-    data: { label: "OpenAI", isStart: false, name: "openai", type: "model" },
-  },
-  {
-    type: "gemini",
-    position: { x: 400, y: 400 },
-    data: { label: "Gemini", isStart: false, name: "gemini", type: "model" },
-  },
-  {
-    type: "geminiEmbedding",
-    position: { x: 500, y: 400 },
+    id: "i1",
+    type: "google_sheets",
+    label: "Google Sheets",
+    name: "app",
     data: {
-      label: "Gemini Embedding",
-      isStart: false,
-      name: "gemini",
-      type: "model",
+      triggerEvent: "",
+      account: "",
+      spreadsheet: "",
+      worksheet: "",
     },
   },
   {
-    type: "pinecone",
-    position: { x: 500, y: 400 },
+    id: "i2",
+    type: "slack",
+    label: "Slack",
+    name: "app",
     data: {
-      label: "Pinecone",
-      isStart: false,
-      name: "pinecone",
-      type: "tool",
+      actionEvent: "",
+      account: "",
+      channel: "",
+      botName: "",
+      messageText: "",
     },
+  },
+  {
+    id: "i3",
+    type: "filter",
+    label: "Filter",
+    name: "control",
+    data: {},
   },
 ];
