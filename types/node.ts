@@ -14,5 +14,6 @@ export interface Node {
   id: string;
   type: string;
   label?: string;
+  name?: string;
   data?: NodeData;
 }

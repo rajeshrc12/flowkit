@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { HomeIcon } from "lucide-react";
+import { TbSettingsAutomation } from "react-icons/tb";
 import { TbApps } from "react-icons/tb";
 import ActiveLink from "@/components/active-link";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import axios from "axios";
 const links = [
   {
     href: "/workflow",
-    icon: <HomeIcon />,
+    icon: <TbSettingsAutomation />,
     name: "Workflow",
   },
   {
@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   const createWorkflow = async () => {
     const response = await axios.post("/api/workflow");
-    router.push(`/workflow/${response.data.workflow.id}`);
+    router.push(`/editor/${response.data.workflow.id}`);
   };
   return (
     <div className="sticky group flex w-[48px] hover:w-[200px] flex-col gap-3 shadow h-screen overflow-hidden p-2 transition-all duration-300">

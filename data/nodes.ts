@@ -5,6 +5,7 @@ export const nodes: Node[] = [
     id: "i1",
     type: "google_sheets",
     label: "Google Sheets",
+    name: "app",
     data: {
       triggerEvent: "",
       account: "",
@@ -16,6 +17,7 @@ export const nodes: Node[] = [
     id: "i2",
     type: "slack",
     label: "Slack",
+    name: "app",
     data: {
       actionEvent: "",
       account: "",
@@ -23,5 +25,12 @@ export const nodes: Node[] = [
       botName: "",
       messageText: "",
     },
+  },
+  {
+    id: "i3",
+    type: "filter",
+    label: "Filter",
+    name: "control",
+    data: {},
   },
 ];

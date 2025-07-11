@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { FiFilter } from "react-icons/fi";
 
 const NodeIcon = ({ name, size = 10 }: { name: string; size?: number }) => {
   if (name === "google_sheets") {
@@ -17,6 +18,9 @@ const NodeIcon = ({ name, size = 10 }: { name: string; size?: number }) => {
     return (
       <Image src="/icons/google-drive.svg" height={size} width={size} alt="" />
     );
+  }
+  if (name === "filter") {
+    return <FiFilter size={size} color="orange" />;
   }
   return <div>NodeIcon</div>;
 };
