@@ -25,11 +25,7 @@ import { Button } from "@/components/ui/button";
 import { FiTrash } from "react-icons/fi";
 
 const CredentialPage = () => {
-  const { data, isLoading, mutate } = useSWR(`/api/credential`, fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    refreshInterval: 0, // No polling
-  });
+  const { data, isLoading, mutate } = useSWR(`/api/credential`, fetcher);
 
   return (
     <div className="p-16 flex flex-col gap-2">
