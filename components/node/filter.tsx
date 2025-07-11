@@ -1,5 +1,4 @@
 import React from "react";
-import { SiSlack } from "react-icons/si";
 import withBottomConnector from "@/components/hoc/withBottomConnector";
 import { useDispatch } from "react-redux";
 import { setEditNode } from "@/app/slices/nodeSlice";
