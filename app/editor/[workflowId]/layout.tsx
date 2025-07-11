@@ -8,21 +8,15 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import EditNodeIndex from "@/components/edit-node";
+import { useRouter } from "next/navigation";
 
 const EditorLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+
   return (
     <div className="w-screen h-screen flex flex-col">
       <div className="h-[50px] w-full flex justify-between items-center px-4 border-b">
-        <div className="flex gap-2 items-center">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <FiHome color="" className="cursor-pointer" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Home</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        <div></div>
         <input
           type="text"
           placeholder="New workflow"
@@ -39,7 +33,19 @@ const EditorLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
       <div className="flex-1 flex">
-        <div className="h-full w-[50px] border-r p-2 flex flex-col items-center"></div>
+        <div className="h-full w-[50px] border-r p-2 flex flex-col items-center">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <FiHome
+                onClick={() => router.push("/workflow")}
+                className="cursor-pointer"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Home</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
         <div className="flex flex-col h-full w-full">
           <div className="relative h-full w-full flex">
             {children}

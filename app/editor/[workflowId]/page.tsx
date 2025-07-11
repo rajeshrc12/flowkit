@@ -18,14 +18,11 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/api";
 import GraphBoard from "@/components/graph-board";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
 import { initNodes } from "@/app/slices/nodeSlice";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
   const dispatch = useDispatch();
-  const reduxNodes = useSelector((state: RootState) => state.node.nodes);
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([
     {
       id: "graph_board",
