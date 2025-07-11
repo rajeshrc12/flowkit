@@ -20,7 +20,7 @@ const Slack = ({
         dispatch(setEditNode({ type: "slack", id }));
       }}
       className={cn(
-        "w-[300px] shadow-md border bg-white rounded-md p-3 flex flex-col gap-2 cursor-pointer",
+        "w-[350px] shadow-md border bg-white rounded-md p-3 flex flex-col gap-2 cursor-pointer",
         {
           "shadow-lg/20 border-primary": editNode.id === id,
         }

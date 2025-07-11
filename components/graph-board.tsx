@@ -11,6 +11,9 @@ const GraphBoard = () => {
   return (
     <div>
       <div>
+        {nodes.length == 0 && (
+          <BaseNode type={"trigger"} index={1} key={"trigger"} id={"trigger"} />
+        )}
         {nodes.map((node: Node, index: number) => (
           <BaseNode
             data={node.data}

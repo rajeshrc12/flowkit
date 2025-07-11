@@ -13,6 +13,6 @@ export interface NodeData {
 export interface Node {
   id: string;
   type: string;
-  label: string;
+  label?: string;
   data?: NodeData;
 }

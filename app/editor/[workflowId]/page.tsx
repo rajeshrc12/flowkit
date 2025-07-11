@@ -27,7 +27,7 @@ const WorkflowPage = () => {
     {
       id: "graph_board",
       type: "graph_board",
-      position: { x: 400, y: 200 },
+      position: { x: 300, y: 100 },
       data: {
         label: "Google Sheets",
       },

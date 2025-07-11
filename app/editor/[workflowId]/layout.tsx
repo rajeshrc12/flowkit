@@ -47,7 +47,7 @@ const EditorLayout = ({ children }: { children: React.ReactNode }) => {
           </Tooltip>
         </div>
         <div className="flex flex-col h-full w-full">
-          <div className="relative h-full w-full flex">
+          <div className="relative h-full w-full flex bg-[#f9f7f3]">
             {children}
             <EditNodeIndex />
           </div>

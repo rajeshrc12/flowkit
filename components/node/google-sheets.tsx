@@ -17,7 +17,7 @@ const GoogleSheets = ({
   return (
     <div
       className={cn(
-        "w-[300px] shadow-md bg-background rounded-md p-3 flex flex-col gap-2 cursor-pointer border",
+        "w-[350px] shadow-md bg-background rounded-md p-3 flex flex-col gap-2 cursor-pointer border",
         {
           "shadow-lg/20 border-primary": editNode.id === id,
         }

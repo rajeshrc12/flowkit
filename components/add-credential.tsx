@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -22,26 +21,8 @@ import { FiPlus } from "react-icons/fi";
 
 const AddCredential = ({ mutate }: { mutate: () => void }) => {
   const [typeDialog, setTypeDialog] = useState(false);
-  const [dataDialog, setDataDialog] = useState(false);
   const [type, setType] = useState("");
-  const [name, setName] = useState("");
-  const [data, setData] = useState({ apiKey: "" });
-  const createCredential = async () => {
-    const response = await axios.post("/api/credential", {
-      name,
-      type,
-      data,
-    });
-    if (response.status === 201) {
-      toast.success("Credential created successfully");
-    }
-    setDataDialog(false);
-    setTypeDialog(false);
-    setData({ apiKey: "" });
-    setType("");
-    setName("");
-    mutate();
-  };
+
   const handleCreateCredentialType = () => {
     setTypeDialog((prev) => !prev);
   };
@@ -50,8 +31,13 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
       toast.error("Please select a credential type");
       return;
     }
+    if (type === "google_sheets") {
+      window.open("/api/google/auth", "_blank", "width=500,height=600");
+    }
+    if (type === "slack") {
+      window.open("/api/slack/auth", "_blank", "width=500,height=600");
+    }
     setTypeDialog((prev) => !prev);
-    setDataDialog((prev) => !prev);
   };
   return (
     <div>
@@ -62,7 +48,7 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
       <Dialog open={typeDialog} onOpenChange={setTypeDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Select Credential</DialogTitle>
+            <DialogTitle>Select App</DialogTitle>
           </DialogHeader>
           <div>
             <Select value={type} onValueChange={setType}>
@@ -76,51 +62,7 @@ const AddCredential = ({ mutate }: { mutate: () => void }) => {
             </Select>
           </div>
           <DialogFooter>
-            <Button onClick={saveCredentialType}>Next</Button>
-            <DialogClose>Cancel</DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={dataDialog} onOpenChange={setDataDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{type.toUpperCase()} </DialogTitle>
-            <DialogDescription>Add Account Details</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-2 w-full">
-            {type === "google_sheets" && (
-              <div>
-                <Button
-                  onClick={() =>
-                    window.open(
-                      "/api/google/auth",
-                      "_blank",
-                      "width=500,height=600"
-                    )
-                  }
-                >
-                  Connect with Google
-                </Button>
-              </div>
-            )}
-            {type === "slack" && (
-              <div>
-                <Button
-                  onClick={() =>
-                    window.open(
-                      "/api/slack/auth",
-                      "_blank",
-                      "width=500,height=600"
-                    )
-                  }
-                >
-                  Connect with Slack
-                </Button>
-              </div>
-            )}
-          </div>
-          <DialogFooter>
-            <Button onClick={createCredential}>Save</Button>
+            <Button onClick={saveCredentialType}>Connect</Button>
             <DialogClose>Cancel</DialogClose>
           </DialogFooter>
         </DialogContent>

@@ -13,19 +13,7 @@ interface NodeState {
 }
 
 const initialState: NodeState = {
-  nodes: [
-    {
-      id: new Date().getTime().toString(),
-      type: "google_sheets",
-      label: "Google Sheets",
-      data: {
-        triggerEvent: "",
-        account: "",
-        spreadsheet: "",
-        worksheet: "",
-      },
-    },
-  ],
+  nodes: [],
   addNodeModal: false,
   editNode: { type: null, id: null },
 };
