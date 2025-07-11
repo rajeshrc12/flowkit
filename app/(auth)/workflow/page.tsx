@@ -35,7 +35,7 @@ const WorkflowPage = () => {
     refreshInterval: 0, // No polling
   });
   const openWorkflow = (workflowId: string) => {
-    router.push(`/workflow/${workflowId}`);
+    router.push(`/editor/${workflowId}`);
   };
   const createWorkflow = async () => {
     const response = await axios.post("/api/workflow");
@@ -50,7 +50,7 @@ const WorkflowPage = () => {
       </div>
       <div className="flex justify-end">
         <div>
-          <Input placeholder="Search" />
+          <Input className="border border-[#b5b2aa]" placeholder="Search" />
         </div>
       </div>
       <div className="mt-2 flex flex-col gap-2">

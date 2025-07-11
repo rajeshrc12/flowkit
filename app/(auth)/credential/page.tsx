@@ -39,7 +39,7 @@ const CredentialPage = () => {
       </div>
       <div className="flex justify-end">
         <div>
-          <Input placeholder="Search" />
+          <Input className="border border-[#b5b2aa]" placeholder="Search" />
         </div>
       </div>
       <Table className="border">

@@ -15,7 +15,7 @@ import { NodeData } from "@/types/node";
 const GoogleSheetsIndex = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
-  const [activeTab, setActiveTab] = React.useState("setup");
+  const [activeTab, setActiveTab] = React.useState("Setup");
   const [data, setData] = React.useState<NodeData>();
   useEffect(() => {
     if (node.editNode.id) {
@@ -30,27 +30,27 @@ const GoogleSheetsIndex = () => {
 
   const handleContinue = () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
-    if (activeTab === "setup") {
-      setActiveTab("configure");
+    if (activeTab === "Setup") {
+      setActiveTab("Configure");
     }
-    if (activeTab === "configure") {
-      setActiveTab("test");
+    if (activeTab === "Configure") {
+      setActiveTab("Test");
     }
-    if (activeTab === "test") {
+    if (activeTab === "Test") {
     }
   };
   return (
-    <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] bg-white shadow border-2 border-blue-800 rounded">
-      <div className="flex justify-between bg-blue-50 p-2">
-        <div>{data?.triggerEvent || "Select event"}</div>
+    <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
+      <div className="flex justify-between border-b p-2">
+        <div className="font-bold">{data?.triggerEvent || "Select event"}</div>
         <IoMdClose color="black" onClick={() => dispatch(resetEditNode())} />
       </div>
       <div className="flex gap-2 text-sm border-b font-medium">
-        {["setup", "configure"].map((tab) => (
+        {["Setup", "Configure"].map((tab) => (
           <div key={tab} className="flex items-center gap-2">
             <button
-              className={cn("hover:text-blue-800 cursor-pointer p-2", {
-                "text-blue-800 border-b border-blue-800": activeTab === tab,
+              className={cn("hover:font-medium cursor-pointer p-2", {
+                "font-medium border-b border-primary": activeTab === tab,
               })}
               onClick={() => {
                 dispatch(updateNode({ id: node.editNode.id, data }));
@@ -64,12 +64,12 @@ const GoogleSheetsIndex = () => {
         ))}
         <div className="flex items-center gap-2">
           <button
-            className={cn("hover:text-blue-800 cursor-pointer p-2", {
-              "text-blue-800 border-b border-blue-800": activeTab === "test",
+            className={cn("hover:font-medium cursor-pointer p-2", {
+              "font-medium border-b border-primary": activeTab === "Test",
             })}
             onClick={() => {
               dispatch(updateNode({ id: node.editNode.id, data }));
-              setActiveTab("test");
+              setActiveTab("Test");
             }}
           >
             Test
@@ -77,14 +77,14 @@ const GoogleSheetsIndex = () => {
         </div>
       </div>
       <div className="p-2 flex-1 overflow-y-auto">
-        {activeTab === "setup" && <Setup data={data} setData={setData} />}
-        {activeTab === "configure" && (
+        {activeTab === "Setup" && <Setup data={data} setData={setData} />}
+        {activeTab === "Configure" && (
           <Configure data={data} setData={setData} />
         )}
-        {activeTab === "test" && <Test />}
+        {activeTab === "Test" && <Test />}
       </div>
       <div className="p-2">
-        <Button className="w-full bg-blue-800" onClick={handleContinue}>
+        <Button className="w-full" onClick={handleContinue}>
           Continue
         </Button>
       </div>

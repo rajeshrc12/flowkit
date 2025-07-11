@@ -12,11 +12,11 @@ const withBottomConnector = (WrappedComponent: React.ComponentType) => {
     return (
       <div>
         <div className="flex flex-col items-center py-2">
-          <div className="h-[30px] border-l border-black" />
+          <div className="h-[30px] border-l border-primary" />
         </div>
         <WrappedComponent {...props} />
         <div className="flex flex-col items-center gap-2">
-          <div className="h-[30px] border-l border-black" />
+          <div className="h-[30px] border-l border-primary" />
           <FiPlus
             size={25}
             onClick={handleAddNode}
