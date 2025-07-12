@@ -1,6 +1,5 @@
 import SignIn from "@/components/sign-in";
-import { ArrowRight, Zap, GitBranch, Package } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Zap, GitBranch, Package } from "lucide-react";
 
 export default function Home() {
   return (

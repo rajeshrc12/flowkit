@@ -4,6 +4,7 @@ import Slack from "@/components/node/slack";
 import { NodeData } from "@/types/node";
 import Trigger from "@/components/node/trigger";
 import Filter from "@/components/node/filter";
+import LoadingNode from "@/components/node/loading-node";
 
 interface BaseNodeProps {
   type: string;
@@ -23,6 +24,9 @@ const BaseNode = ({ type, index, id, data }: BaseNodeProps) => {
   }
   if (type === "filter") {
     return <Filter index={index} id={id} data={data} />;
+  }
+  if (type === "loading") {
+    return <LoadingNode index={index} id={id} data={data} />;
   }
   return <div>BaseNode</div>;
 };

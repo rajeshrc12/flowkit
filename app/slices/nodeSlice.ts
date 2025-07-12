@@ -13,7 +13,7 @@ interface NodeState {
 }
 
 const initialState: NodeState = {
-  nodes: [],
+  nodes: [{ type: "loading", id: "loading", data: {} }],
   addNodeModal: false,
   editNode: { type: null, id: null },
 };

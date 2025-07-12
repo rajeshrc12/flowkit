@@ -9,10 +9,24 @@ import {
 import { Button } from "@/components/ui/button";
 import EditNodeIndex from "@/components/edit-node";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { useParams } from "next/navigation";
+import axios from "axios";
+import { toast } from "sonner";
 
 const EditorLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const nodes = useSelector((state: RootState) => state.node.nodes);
+  const { workflowId } = useParams();
 
+  const handleSave = async () => {
+    const workflow = await axios.patch(`/api/workflow`, { nodes, workflowId });
+
+    if (workflow.data) {
+      toast.success("Workflow saved successfully");
+    }
+  };
   return (
     <div className="w-screen h-screen flex flex-col">
       <div className="h-[50px] w-full flex justify-between items-center px-4 border-b">
@@ -29,6 +43,13 @@ const EditorLayout = ({ children }: { children: React.ReactNode }) => {
           </Button>
           <Button variant="outline" className="px-2 py-1 m-0 h-auto rounded">
             <span>Publish</span>
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="default"
+            className="px-2 py-1 m-0 h-auto rounded"
+          >
+            <span>Save</span>
           </Button>
         </div>
       </div>

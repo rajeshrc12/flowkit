@@ -62,8 +62,8 @@ const WorkflowPage = () => {
   useEffect(() => {
     if (data) {
       setName(data.name);
-      if (data.node && data.node.length > 0) {
-        dispatch(initNodes(data.node));
+      if (data.node) {
+        dispatch(initNodes(data.node || []));
       }
     }
   }, [data]);

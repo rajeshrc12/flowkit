@@ -32,17 +32,19 @@ export async function PATCH(req: Request) {
 
   const { nodes, edges, workflowId, name } = await req.json();
 
+  let data: any = {};
+
+  if (nodes) data.node = nodes;
+  if (edges) data.edge = edges;
+  if (name) data.name = name;
+
   try {
     const workflow = await prisma.workflow.update({
       where: {
         id: workflowId,
         userId: id,
       },
-      data: {
-        node: nodes,
-        edge: edges,
-        name,
-      },
+      data,
     });
 
     return Response.json({ workflow }, { status: 201 });

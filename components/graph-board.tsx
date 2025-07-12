@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AddNode from "@/components/add-node";
 import BaseNode from "@/components/base-node";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Node } from "@/types/node";
+import { initNodes } from "@/app/slices/nodeSlice";
 
 const GraphBoard = () => {
   const nodes = useSelector((state: RootState) => state.node.nodes);
-  // console.log(nodes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(initNodes([{ id: "loading", type: "loading", data: {} }]));
+    };
+  }, []);
   return (
     <div>
       <div>
-        {nodes.length == 0 && (
-          <BaseNode type={"trigger"} index={1} key={"trigger"} id={"trigger"} />
-        )}
         {nodes.map((node: Node, index: number) => (
           <BaseNode
             data={node.data}
@@ -23,6 +27,9 @@ const GraphBoard = () => {
             id={node.id}
           />
         ))}
+        {nodes.length == 0 && (
+          <BaseNode type={"trigger"} index={1} key={"trigger"} id={"trigger"} />
+        )}
       </div>
       <div>
         <AddNode />

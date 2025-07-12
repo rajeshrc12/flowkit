@@ -1,6 +1,5 @@
 import Sidebar from "@/components/sidebar";
 import React from "react";
-import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/navbar";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
@@ -11,7 +10,6 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar />
         <div className="flex-1">{children}</div>
       </div>
-      <Toaster />
     </div>
   );
 };
