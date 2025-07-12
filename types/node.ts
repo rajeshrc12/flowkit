@@ -9,6 +9,7 @@ export interface NodeData {
   channel?: string | null;
   botName?: string | null;
   messageText?: string | null;
+  username?: string | null;
 }
 export interface Node {
   id: string;

@@ -9,6 +9,7 @@ import { RootState } from "@/app/store/store";
 import { Button } from "@/components/ui/button";
 import Setup from "@/components/edit-node/slack/setup";
 import { NodeData } from "@/types/node";
+import Configure from "@/components/edit-node/slack/configure";
 
 const SlackIndex = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const SlackIndex = () => {
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
       <div className="flex justify-between border-b p-2">
-        <div className="font-bold">{data?.triggerEvent || "Select event"}</div>
+        <div className="font-bold">{data?.actionEvent || "Select event"}</div>
         <IoMdClose color="black" onClick={() => dispatch(resetEditNode())} />
       </div>
       <div className="flex gap-2 text-sm border-b font-medium">
@@ -76,6 +77,9 @@ const SlackIndex = () => {
       </div>
       <div className="p-2 flex-1 overflow-y-auto">
         {activeTab === "Setup" && <Setup data={data} setData={setData} />}
+        {activeTab === "Configure" && (
+          <Configure data={data} setData={setData} />
+        )}
       </div>
       <div className="p-2">
         <Button className="w-full" onClick={handleContinue}>

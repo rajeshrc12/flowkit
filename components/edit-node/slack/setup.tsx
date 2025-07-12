@@ -9,8 +9,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import NodeIcon from "@/components/node-icon";
+import useSWR from "swr";
+import { fetcher } from "@/utils/api";
 
 const Setup = ({ data, setData }: { data: any; setData: any }) => {
+  const { data: credentials } = useSWR(
+    data?.type ? `/api/credential/${data.type}` : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: 0, // No polling
+    }
+  );
+
+  console.log(credentials);
   return (
     <div className="flex flex-col text-sm gap-2">
       <div className="flex flex-col gap-2">
@@ -24,13 +37,13 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <div>Trigger Event</div>
+        <div>Action Event</div>
         <Select
-          value={data?.triggerEvent || ""}
+          value={data?.actionEvent || ""}
           onValueChange={(value) =>
             setData({
               ...data,
-              triggerEvent: value,
+              actionEvent: value,
             })
           }
         >
@@ -48,7 +61,7 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Account</div>
         <Select
-          value={data?.account || "loading"}
+          value={data?.account}
           onValueChange={(value) =>
             setData({
               ...data,
@@ -60,9 +73,20 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
             <SelectValue placeholder="Select account" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem disabled value="loading">
-              No credentials found
-            </SelectItem>
+            {credentials?.length > 0 ? (
+              credentials?.map((credential: any) => (
+                <SelectItem key={credential.id} value={credential.id}>
+                  {credential.name}
+                  <span className="ml-2 text-xs text-gray-500">
+                    {credential.email}
+                  </span>
+                </SelectItem>
+              ))
+            ) : (
+              <SelectItem disabled value="loading">
+                No credentials found
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
       </div>

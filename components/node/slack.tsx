@@ -14,6 +14,7 @@ const Slack = ({
 }: { index: number; id: string; data?: NodeData } & any) => {
   const dispatch = useDispatch();
   const editNode = useSelector((state: RootState) => state.node.editNode);
+  console.log(data);
   return (
     <div
       onClick={() => {

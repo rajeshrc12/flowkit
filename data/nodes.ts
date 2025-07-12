@@ -24,6 +24,7 @@ export const nodes: Node[] = [
       channel: "",
       botName: "",
       messageText: "",
+      username: "",
     },
   },
   {
