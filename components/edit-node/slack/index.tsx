@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import Setup from "@/components/edit-node/slack/setup";
 import { NodeData } from "@/types/node";
 import Configure from "@/components/edit-node/slack/configure";
+import Test from "@/components/edit-node/slack/test";
 
 const SlackIndex = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const SlackIndex = () => {
         type: node.editNode.type,
       });
     }
-  }, [node.editNode.id]);
+  }, [node.editNode]);
 
   const handleContinue = () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
@@ -36,8 +37,10 @@ const SlackIndex = () => {
       setActiveTab("Test");
     }
     if (activeTab === "Test") {
+      console.log(data);
     }
   };
+
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
       <div className="flex justify-between border-b p-2">
@@ -80,6 +83,7 @@ const SlackIndex = () => {
         {activeTab === "Configure" && (
           <Configure data={data} setData={setData} />
         )}
+        {activeTab === "Test" && <Test />}
       </div>
       <div className="p-2">
         <Button className="w-full" onClick={handleContinue}>

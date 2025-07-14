@@ -10,6 +10,8 @@ export interface NodeData {
   botName?: string | null;
   messageText?: string | null;
   username?: string | null;
+  worksheetData?: any[] | null;
+  worksheetIndex?: number | null;
 }
 export interface Node {
   id: string;

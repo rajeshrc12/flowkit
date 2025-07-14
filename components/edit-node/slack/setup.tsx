@@ -61,7 +61,7 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Account</div>
         <Select
-          value={data?.account}
+          value={data?.account || ""}
           onValueChange={(value) =>
             setData({
               ...data,

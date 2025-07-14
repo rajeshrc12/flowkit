@@ -11,6 +11,9 @@ import Setup from "@/components/edit-node/google-sheets/setup";
 import Configure from "@/components/edit-node/google-sheets/configure";
 import Test from "@/components/edit-node/google-sheets/test";
 import { NodeData } from "@/types/node";
+import axios from "axios";
+import { FiRefreshCcw } from "react-icons/fi";
+import { toast } from "sonner";
 
 const GoogleSheetsIndex = () => {
   const dispatch = useDispatch();
@@ -26,19 +29,33 @@ const GoogleSheetsIndex = () => {
         type: node.editNode.type,
       });
     }
-  }, [node.editNode.id]);
+  }, [node.editNode]);
 
+  const fetchSpreadsheetData = async () => {
+    if (data?.spreadsheet && data?.worksheet && data?.account) {
+      const url = `/api/google/worksheet?spreadsheetId=${data?.spreadsheet}&worksheetName=${data?.worksheet}&credentialId=${data?.account}`;
+      console.log(url);
+      const sheet = await axios.get(url);
+      setData({
+        ...data,
+        worksheetData: sheet.data,
+      });
+    }
+  };
   const handleContinue = () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
     if (activeTab === "Setup") {
       setActiveTab("Configure");
     }
     if (activeTab === "Configure") {
+      fetchSpreadsheetData();
       setActiveTab("Test");
     }
     if (activeTab === "Test") {
+      console.log(data);
     }
   };
+
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
       <div className="flex justify-between border-b p-2">
@@ -76,12 +93,24 @@ const GoogleSheetsIndex = () => {
           </button>
         </div>
       </div>
-      <div className="p-2 flex-1 overflow-y-auto">
+      <div className="px-2 relative flex-1 overflow-y-auto">
+        {activeTab === "Test" && (
+          <div className="sticky top-0 py-3 flex justify-between bg-white">
+            <div className="text-sm">Available records</div>
+            <FiRefreshCcw
+              className="cursor-pointer"
+              onClick={async () => {
+                await fetchSpreadsheetData();
+                toast.success("Data fetched successfully");
+              }}
+            />
+          </div>
+        )}
         {activeTab === "Setup" && <Setup data={data} setData={setData} />}
         {activeTab === "Configure" && (
           <Configure data={data} setData={setData} />
         )}
-        {activeTab === "Test" && <Test />}
+        {activeTab === "Test" && <Test data={data} setData={setData} />}
       </div>
       <div className="p-2">
         <Button className="w-full" onClick={handleContinue}>

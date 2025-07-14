@@ -27,7 +27,7 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Username</div>
         <Select
-          value={data?.username}
+          value={data?.username || ""}
           onValueChange={(value) =>
             setData({
               ...data,
@@ -60,7 +60,7 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Message text</div>
         <Textarea
-          value={data?.messageText}
+          value={data?.messageText || ""}
           onChange={(e) =>
             setData({
               ...data,

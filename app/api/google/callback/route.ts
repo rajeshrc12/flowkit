@@ -3,10 +3,10 @@ import { getOAuthClient } from "@/lib/google";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { Session } from "next-auth";
+import { google } from "googleapis";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  console.log(url);
   const code = url.searchParams.get("code");
   const {
     user: { id },
@@ -20,15 +20,27 @@ export async function GET(req: NextRequest) {
     const { tokens } = await oauthClient.getToken(code);
     oauthClient.setCredentials(tokens);
 
-    // console.log(tokens);
+    // Fetch user email using Google OAuth2 API
+    const oauth2 = google.oauth2({
+      auth: oauthClient,
+      version: "v2",
+    });
+
+    const userInfo = await oauth2.userinfo.get();
+    const email = userInfo?.data?.email;
+
     await prisma.credential.create({
       data: {
         name: "Google Sheets",
         type: "google_sheets",
         userId: id,
-        data: { ...tokens },
+        data: {
+          ...tokens,
+          email, // now email will be stored with tokens
+        },
       },
     });
+
     const html = `
       <html>
         <head><title>Authentication Completed</title></head>

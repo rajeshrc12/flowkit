@@ -8,10 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Configure = ({ data, setData }: { data: any; setData: any }) => {
   const { data: sheets, isLoading } = useSWR(
-    data.account ? `/api/google/sheets/${data.account}` : null,
+    data.account ? `/api/google/spreadsheet/${data.account}` : null,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -40,9 +41,29 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
           </SelectTrigger>
           <SelectContent>
             {isLoading && (
-              <SelectItem value="__loading_spreadsheet" disabled>
-                Loading...
-              </SelectItem>
+              <>
+                <SelectItem
+                  className="flex flex-col gap-2"
+                  value="__loading_spreadsheet"
+                  disabled
+                >
+                  <Skeleton className="h-8 w-84" />
+                </SelectItem>
+                <SelectItem
+                  className="flex flex-col gap-2"
+                  value="__loading_spreadsheet"
+                  disabled
+                >
+                  <Skeleton className="h-8 w-84" />
+                </SelectItem>
+                <SelectItem
+                  className="flex flex-col gap-2"
+                  value="__loading_spreadsheet"
+                  disabled
+                >
+                  <Skeleton className="h-8 w-84" />
+                </SelectItem>
+              </>
             )}
             {sheets &&
               !isLoading &&
@@ -71,13 +92,7 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
             <SelectValue placeholder="Select worksheet" />
           </SelectTrigger>
           <SelectContent>
-            {isLoading && (
-              <SelectItem value="__loading_worksheet" disabled>
-                Loading...
-              </SelectItem>
-            )}
-            {data.spreadsheet &&
-              !isLoading &&
+            {!isLoading &&
               sheets
                 ?.find((sheet: any) => sheet.id === data.spreadsheet)
                 ?.sheets?.map((sheet: any) => (
@@ -85,6 +100,11 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
                     {sheet}
                   </SelectItem>
                 ))}
+            {!data.spreadsheet && (
+              <SelectItem value="__loading_worksheet" disabled>
+                First select spreadsheet
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
       </div>
