@@ -9,9 +9,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FiRefreshCcw } from "react-icons/fi";
+import { toast } from "sonner";
 
 const Configure = ({ data, setData }: { data: any; setData: any }) => {
-  const { data: sheets, isLoading } = useSWR(
+  const {
+    data: sheets,
+    isLoading,
+    mutate,
+  } = useSWR(
     data.account ? `/api/google/spreadsheet/${data.account}` : null,
     fetcher,
     {
@@ -22,10 +28,18 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
   );
 
   return (
-    <div className="flex flex-col text-sm gap-4">
-      {/* Spreadsheet Select */}
+    <div className="flex flex-col text-sm gap-4 py-2">
       <div className="flex flex-col gap-2">
-        <div>Spreadsheet</div>
+        <div className="flex items-center gap-2">
+          <div>Spreadsheet</div>
+          <FiRefreshCcw
+            className="cursor-pointer"
+            onClick={() => {
+              mutate();
+              toast.success("Data fetched successfully");
+            }}
+          />
+        </div>
         <Select
           value={data?.spreadsheet}
           onValueChange={(value) =>
@@ -65,13 +79,16 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
                 </SelectItem>
               </>
             )}
-            {sheets &&
-              !isLoading &&
-              sheets?.map((sheet: any) => (
-                <SelectItem key={sheet.id} value={sheet.id}>
-                  {sheet.name}
-                </SelectItem>
-              ))}
+            {sheets?.map((sheet: any) => (
+              <SelectItem key={sheet.id} value={sheet.id}>
+                {sheet.name}
+              </SelectItem>
+            ))}
+            {sheets?.length === 0 && (
+              <SelectItem value="__loading_spreadsheet" disabled>
+                No spreadsheets found
+              </SelectItem>
+            )}
           </SelectContent>
         </Select>
       </div>

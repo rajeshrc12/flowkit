@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { FiTrash } from "react-icons/fi";
+import { AppTypes } from "@/types/node";
 
 const CredentialPage = () => {
   const { data, isLoading, mutate } = useSWR(`/api/credential`, fetcher);
@@ -85,7 +86,9 @@ const CredentialPage = () => {
                         </span>
                       </span>
                     </TableCell>
-                    <TableCell>{credential.type}</TableCell>
+                    <TableCell>
+                      {AppTypes[credential?.type as keyof typeof AppTypes]}
+                    </TableCell>
                     <TableCell>{new Date().toLocaleString()}</TableCell>
                     <TableCell>
                       <Popover>

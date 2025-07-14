@@ -95,7 +95,7 @@ const GoogleSheetsIndex = () => {
       </div>
       <div className="px-2 relative flex-1 overflow-y-auto">
         {activeTab === "Test" && (
-          <div className="sticky top-0 py-3 flex justify-between bg-white">
+          <div className="sticky top-0 py-3 flex gap-2 bg-white">
             <div className="text-sm">Available records</div>
             <FiRefreshCcw
               className="cursor-pointer"

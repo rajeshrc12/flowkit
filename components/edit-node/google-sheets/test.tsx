@@ -54,9 +54,9 @@ const Test = ({ data, setData }: { data: any; setData: any }) => {
               <div className="flex flex-col gap-2">
                 {row?.map((cell: any, cellIndex: number) =>
                   Object.entries(cell)?.map(([key, value]) => (
-                    <div key={key + index} className="flex gap-2">
+                    <div key={key + index} className="flex items-center gap-2">
                       <span className="font-medium border px-1">{key}</span>
-                      <span className="">{value as string}</span>
+                      <span className="text-sm">{value as string}</span>
                     </div>
                   ))
                 )}

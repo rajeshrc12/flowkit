@@ -11,9 +11,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import NodeIcon from "@/components/node-icon";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Setup = ({ data, setData }: { data: any; setData: any }) => {
-  const { data: credentials } = useSWR(
+  const { data: credentials, isLoading } = useSWR(
     data?.type ? `/api/credential/${data.type}` : null,
     fetcher,
     {
@@ -61,7 +62,7 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Account</div>
         <Select
-          value={data?.account || "loading"}
+          value={data?.account || ""}
           onValueChange={(value) =>
             setData({
               ...data,
@@ -85,6 +86,11 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
             ) : (
               <SelectItem disabled value="loading">
                 No credentials found
+              </SelectItem>
+            )}
+            {isLoading && (
+              <SelectItem value="__loading_credential" disabled>
+                <Skeleton className="h-4 w-32" />
               </SelectItem>
             )}
           </SelectContent>

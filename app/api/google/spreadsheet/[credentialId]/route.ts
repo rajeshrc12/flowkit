@@ -25,7 +25,7 @@ export async function GET(req: Request) {
     const drive = google.drive({ version: "v3", auth: oAuth2Client });
 
     const fileList = await drive.files.list({
-      q: "mimeType='application/vnd.google-apps.spreadsheet'",
+      q: "mimeType='application/vnd.google-apps.spreadsheet' and trashed = false",
       fields: "files(id, name)",
     });
 
