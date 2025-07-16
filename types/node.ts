@@ -12,6 +12,7 @@ export interface NodeData {
   username?: string | null;
   worksheetData?: any[] | null;
   worksheetIndex?: number | null;
+  response?: any | null;
 }
 export interface Node {
   id: string;

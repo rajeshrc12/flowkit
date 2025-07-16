@@ -60,6 +60,7 @@ const Configure = ({ data, setData }: { data: any; setData: any }) => {
       <div className="flex flex-col gap-2">
         <div>Message text</div>
         <Textarea
+          className="text-sm"
           value={data?.messageText || ""}
           onChange={(e) =>
             setData({

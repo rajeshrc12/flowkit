@@ -74,7 +74,7 @@ const Setup = ({ data, setData }: { data: any; setData: any }) => {
             <SelectValue placeholder="Select account" />
           </SelectTrigger>
           <SelectContent>
-            {credentials?.length > 0 ? (
+            {!isLoading && credentials?.length > 0 ? (
               credentials?.map((credential: any) => (
                 <SelectItem key={credential.id} value={credential.id}>
                   {credential.name}

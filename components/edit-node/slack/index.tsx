@@ -11,12 +11,15 @@ import Setup from "@/components/edit-node/slack/setup";
 import { NodeData } from "@/types/node";
 import Configure from "@/components/edit-node/slack/configure";
 import Test from "@/components/edit-node/slack/test";
+import axios from "axios";
+import { FiLoader } from "react-icons/fi";
 
 const SlackIndex = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
   const [activeTab, setActiveTab] = React.useState("Setup");
   const [data, setData] = React.useState<NodeData>();
+  const [isLoading, setIsLoading] = React.useState(false);
   useEffect(() => {
     if (node.editNode.id) {
       const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
@@ -28,7 +31,7 @@ const SlackIndex = () => {
     }
   }, [node.editNode]);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
     if (activeTab === "Setup") {
       setActiveTab("Configure");
@@ -37,7 +40,10 @@ const SlackIndex = () => {
       setActiveTab("Test");
     }
     if (activeTab === "Test") {
-      console.log(data);
+      setIsLoading(true);
+      const message = await axios.post(`/api/slack/message`, data);
+      setData({ ...data, response: message.data });
+      setIsLoading(false);
     }
   };
 
@@ -83,11 +89,16 @@ const SlackIndex = () => {
         {activeTab === "Configure" && (
           <Configure data={data} setData={setData} />
         )}
-        {activeTab === "Test" && <Test />}
+        {activeTab === "Test" && <Test data={data} setData={setData} />}
       </div>
       <div className="p-2">
-        <Button className="w-full" onClick={handleContinue}>
-          Continue
+        <Button
+          className="w-full"
+          onClick={handleContinue}
+          disabled={isLoading}
+        >
+          {isLoading && <FiLoader className="mr-2 h-4 w-4 animate-spin" />}
+          {activeTab === "Test" ? "Test this step" : "Continue"}
         </Button>
       </div>
     </div>
