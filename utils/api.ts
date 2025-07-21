@@ -6,7 +6,7 @@ type SheetRowObject = {
   [key: string]: string;
 };
 
-export const convertSheetData = (values: string[][]): SheetRowObject[][] => {
+export const convertSheetData = (values: string[][]): SheetRowObject[] => {
   console.log(values);
   if (!values) return [];
   return values?.map((row) => {
@@ -17,6 +17,6 @@ export const convertSheetData = (values: string[][]): SheetRowObject[][] => {
       obj[`col${colLetter}`] = cell;
     });
 
-    return [obj];
+    return obj;
   });
 };

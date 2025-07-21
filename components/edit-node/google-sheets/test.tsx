@@ -25,25 +25,29 @@ const SkeletonLoader = () => {
 };
 
 const Test = ({ data, setData }: { data: any; setData: any }) => {
-  if (!data?.worksheetData) {
+  if (!data?.response) {
     return <SkeletonLoader />;
   }
   return (
     <div className="text-sm flex flex-col gap-2">
-      {data?.worksheetData.length > 0 ? (
-        data?.worksheetData?.map((row: any, index: number) => (
+      {data?.response.length > 0 ? (
+        data?.response?.map((row: any, index: number) => (
           <Popover key={index}>
             <PopoverTrigger
               onClick={() => {
                 setData({
                   ...data,
-                  worksheetIndex: index,
+                  selectedResponse: {
+                    index,
+                    data: row,
+                  },
                 });
               }}
               className={cn(
                 "border hover:border-primary p-2 rounded flex justify-between",
                 {
-                  "bg-gray-100 border-primary": data?.worksheetIndex === index,
+                  "bg-gray-100 border-primary":
+                    data?.selectedResponse?.index === index,
                 }
               )}
             >
@@ -52,14 +56,12 @@ const Test = ({ data, setData }: { data: any; setData: any }) => {
             </PopoverTrigger>
             <PopoverContent align="start">
               <div className="flex flex-col gap-2">
-                {row?.map((cell: any, cellIndex: number) =>
-                  Object.entries(cell)?.map(([key, value]) => (
-                    <div key={key + index} className="flex items-center gap-2">
-                      <span className="font-medium border px-1">{key}</span>
-                      <span className="text-sm">{value as string}</span>
-                    </div>
-                  ))
-                )}
+                {Object.entries(row)?.map(([key, value]) => (
+                  <div key={key + index} className="flex items-center gap-2">
+                    <span className="font-medium border px-1">{key}</span>
+                    <span className="text-sm">{value as string}</span>
+                  </div>
+                ))}
               </div>
             </PopoverContent>
           </Popover>

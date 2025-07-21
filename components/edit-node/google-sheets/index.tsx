@@ -34,11 +34,11 @@ const GoogleSheetsIndex = () => {
   const fetchSpreadsheetData = async () => {
     if (data?.spreadsheet && data?.worksheet && data?.account) {
       const url = `/api/google/worksheet?spreadsheetId=${data?.spreadsheet}&worksheetName=${data?.worksheet}&credentialId=${data?.account}`;
-      console.log(url);
       const sheet = await axios.get(url);
+      console.log(sheet.data);
       setData({
         ...data,
-        worksheetData: sheet.data,
+        response: sheet.data,
       });
     }
   };
@@ -55,7 +55,8 @@ const GoogleSheetsIndex = () => {
       console.log(data);
     }
   };
-
+  console.clear();
+  console.log("google sheets data", data);
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
       <div className="flex justify-between border-b p-2">
