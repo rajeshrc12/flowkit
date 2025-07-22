@@ -13,6 +13,7 @@ import Configure from "@/components/edit-node/slack/configure";
 import Test from "@/components/edit-node/slack/test";
 import axios from "axios";
 import { FiLoader } from "react-icons/fi";
+import { createPlainMessages } from "@/utils/formatMessage";
 
 const SlackIndex = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,17 @@ const SlackIndex = () => {
     }
     if (activeTab === "Configure") {
       setActiveTab("Test");
+      const nodeIndex = node.nodes.findIndex(
+        (n: any) => n.id === node.editNode.id
+      );
+      const prevNode = node.nodes[nodeIndex - 1] as any;
+      const prevNodeData = prevNode?.data?.selectedResponse?.data;
+      setData({
+        ...data,
+        messageTextPlain: createPlainMessages(data?.messageText || "", [
+          prevNodeData,
+        ]).join("\n"),
+      });
     }
     if (activeTab === "Test") {
       setIsLoading(true);

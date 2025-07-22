@@ -12,6 +12,7 @@ export interface NodeData {
   username?: string | null;
   response?: any;
   selectedResponse?: any;
+  messageTextPlain?: string;
 }
 export interface Node {
   id: string;

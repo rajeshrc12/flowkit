@@ -12,7 +12,7 @@ const Test = ({ data, setData }: { data: any; setData: any }) => {
       <div>Data In</div>
       <div className="flex gap-2 items-center text-xs">
         <div className="border bg-accent p-1 rounded">Message:</div>
-        <div>{data.messageText}</div>
+        <div>{data?.messageTextPlain}</div>
       </div>
 
       {data.response && (

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const {
       username: userId,
-      messageText: message,
+      messageTextPlain: message,
       account: credentialId,
     } = await req.json();
     const credential = (await prisma.credential.findUnique({
