@@ -5,11 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { Node } from "@/types/node";
 import { initNodes } from "@/app/slices/nodeSlice";
+import useSWR from "swr";
+import { fetcher } from "@/utils/api";
+import { useParams } from "next/navigation";
 
 const GraphBoard = () => {
   const nodes = useSelector((state: RootState) => state.node.nodes);
   const dispatch = useDispatch();
-
+  const { workflowId } = useParams();
+  const { data, isLoading } = useSWR(
+    workflowId ? `/api/workflow/${workflowId}` : null,
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      refreshInterval: 0, // No polling
+    }
+  );
+  useEffect(() => {
+    if (data?.node && !isLoading) {
+      dispatch(initNodes(data.node || []));
+    }
+  }, [data]);
   useEffect(() => {
     return () => {
       dispatch(initNodes([{ id: "loading", type: "loading", data: {} }]));

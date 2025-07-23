@@ -7,10 +7,13 @@ import {
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import { updateNode } from "@/app/slices/nodeSlice";
 
 const SkeletonLoader = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 py-2">
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
@@ -25,23 +28,27 @@ const SkeletonLoader = () => {
 };
 
 const Test = ({ data, setData }: { data: any; setData: any }) => {
+  const dispatch = useDispatch();
+  const node = useSelector((state: RootState) => state.node);
   if (!data?.response) {
     return <SkeletonLoader />;
   }
   return (
-    <div className="text-sm flex flex-col gap-2">
+    <div className="text-sm flex flex-col gap-2 py-2">
       {data?.response.length > 0 ? (
         data?.response?.map((row: any, index: number) => (
           <Popover key={index}>
             <PopoverTrigger
               onClick={() => {
-                setData({
+                const newData = {
                   ...data,
                   selectedResponse: {
                     index,
                     data: row,
                   },
-                });
+                };
+                setData(newData);
+                dispatch(updateNode({ id: node.editNode.id, data: newData }));
               }}
               className={cn(
                 "border hover:border-primary p-2 rounded flex justify-between",

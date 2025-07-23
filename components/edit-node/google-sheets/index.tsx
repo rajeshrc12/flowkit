@@ -12,14 +12,16 @@ import Configure from "@/components/edit-node/google-sheets/configure";
 import Test from "@/components/edit-node/google-sheets/test";
 import { NodeData } from "@/types/node";
 import axios from "axios";
-import { FiRefreshCcw } from "react-icons/fi";
 import { toast } from "sonner";
+import { useParams } from "next/navigation";
 
 const GoogleSheetsIndex = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
   const [activeTab, setActiveTab] = React.useState("Setup");
   const [data, setData] = React.useState<NodeData>();
+  const { workflowId } = useParams();
+
   useEffect(() => {
     if (node.editNode.id) {
       const nodeData = node.nodes.find((n) => n.id === node?.editNode?.id);
@@ -52,7 +54,8 @@ const GoogleSheetsIndex = () => {
       setActiveTab("Test");
     }
     if (activeTab === "Test") {
-      console.log(data);
+      fetchSpreadsheetData();
+      toast.success("Records fetched successfully");
     }
   };
   console.clear();
@@ -95,18 +98,6 @@ const GoogleSheetsIndex = () => {
         </div>
       </div>
       <div className="px-2 relative flex-1 overflow-y-auto">
-        {activeTab === "Test" && (
-          <div className="sticky top-0 py-3 flex gap-2 bg-white">
-            <div className="text-sm">Available records</div>
-            <FiRefreshCcw
-              className="cursor-pointer"
-              onClick={async () => {
-                await fetchSpreadsheetData();
-                toast.success("Data fetched successfully");
-              }}
-            />
-          </div>
-        )}
         {activeTab === "Setup" && <Setup data={data} setData={setData} />}
         {activeTab === "Configure" && (
           <Configure data={data} setData={setData} />
@@ -115,7 +106,7 @@ const GoogleSheetsIndex = () => {
       </div>
       <div className="p-2">
         <Button className="w-full" onClick={handleContinue}>
-          Continue
+          {activeTab === "Test" ? "Test" : "Continue"}
         </Button>
       </div>
     </div>
