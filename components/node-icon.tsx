@@ -22,6 +22,11 @@ const NodeIcon = ({ name, size = 10 }: { name: string; size?: number }) => {
   if (name === "filter") {
     return <FiFilter size={size} color="orange" />;
   }
+  if (name === "telegram") {
+    return (
+      <Image src="/icons/telegram.svg" height={size} width={size} alt="" />
+    );
+  }
   return <div>NodeIcon</div>;
 };
 

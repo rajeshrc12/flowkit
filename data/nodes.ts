@@ -34,4 +34,13 @@ export const nodes: Node[] = [
     name: "control",
     data: {},
   },
+  {
+    id: "i4",
+    type: "telegram",
+    label: "Telegram",
+    name: "app",
+    data: {
+      accessToken: "",
+    },
+  },
 ];

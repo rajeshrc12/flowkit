@@ -32,7 +32,7 @@ const CredentialPage = () => {
     <div className="p-16 flex flex-col gap-2">
       <div className="flex justify-between">
         <div className="font-bold text-2xl">App Connections</div>
-        <AddCredential mutate={mutate} />
+        <AddCredential />
       </div>
       <div className="flex justify-end">
         <div>

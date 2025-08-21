@@ -1,25 +1,23 @@
-import React, { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
-import { resetEditNode, updateNode } from "@/app/slices/nodeSlice";
+import { resetEditNode } from "@/app/slices/nodeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
-import { Button } from "@/components/ui/button";
-import Setup from "@/components/edit-node/google-sheets/setup";
-import Configure from "@/components/edit-node/google-sheets/configure";
-import Test from "@/components/edit-node/google-sheets/test";
+import { cn } from "@/lib/utils";
 import { NodeData } from "@/types/node";
-import axios from "axios";
-import { toast } from "sonner";
-import { useParams } from "next/navigation";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { updateNode } from "@/app/slices/nodeSlice";
+import Setup from "@/components/edit-node/telegram/setup";
+import Configure from "@/components/edit-node/telegram/configure";
+import Test from "@/components/edit-node/telegram/test";
 
-const GoogleSheetsIndex = () => {
+const TelegramIndex = () => {
   const dispatch = useDispatch();
   const node = useSelector((state: RootState) => state.node);
-  const [activeTab, setActiveTab] = React.useState("Setup");
-  const [data, setData] = React.useState<NodeData>();
+  const [data, setData] = useState<NodeData>();
+  const [activeTab, setActiveTab] = useState("Setup");
 
   useEffect(() => {
     if (node.editNode.id) {
@@ -31,34 +29,18 @@ const GoogleSheetsIndex = () => {
       });
     }
   }, [node.editNode]);
-
-  const fetchSpreadsheetData = async () => {
-    if (data?.spreadsheet && data?.worksheet && data?.account) {
-      const url = `/api/google/worksheet?spreadsheetId=${data?.spreadsheet}&worksheetName=${data?.worksheet}&credentialId=${data?.account}`;
-      const sheet = await axios.get(url);
-      console.log(sheet.data);
-      setData({
-        ...data,
-        response: sheet.data,
-      });
-    }
-  };
   const handleContinue = () => {
     dispatch(updateNode({ id: node.editNode.id, data }));
     if (activeTab === "Setup") {
       setActiveTab("Configure");
     }
     if (activeTab === "Configure") {
-      fetchSpreadsheetData();
       setActiveTab("Test");
     }
     if (activeTab === "Test") {
-      fetchSpreadsheetData();
-      toast.success("Records fetched successfully");
+      console.log(data);
     }
   };
-  console.clear();
-  console.log("google sheets data", data);
   return (
     <div className="flex flex-col absolute top-3 right-3 w-[400px] h-[400px] border shadow rounded bg-background">
       <div className="flex justify-between border-b p-2">
@@ -105,11 +87,11 @@ const GoogleSheetsIndex = () => {
       </div>
       <div className="p-2">
         <Button className="w-full" onClick={handleContinue}>
-          {activeTab === "Test" ? "Test" : "Continue"}
+          {activeTab === "Test" ? "Submit" : "Continue"}
         </Button>
       </div>
     </div>
   );
 };
 
-export default GoogleSheetsIndex;
+export default TelegramIndex;

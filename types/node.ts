@@ -13,6 +13,8 @@ export interface NodeData {
   response?: any;
   selectedResponse?: any;
   messageTextPlain?: string;
+  accessToken?: string;
+  chatId?: string | null;
 }
 export interface Node {
   id: string;
@@ -26,4 +28,5 @@ export const AppTypes = {
   google_sheets: "Google Sheets",
   slack: "Slack",
   filter: "Filter",
+  telegram: "Telegram",
 };

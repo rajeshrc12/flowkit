@@ -5,6 +5,7 @@ import { NodeData } from "@/types/node";
 import Trigger from "@/components/node/trigger";
 import Filter from "@/components/node/filter";
 import LoadingNode from "@/components/node/loading-node";
+import Telegram from "@/components/node/telegram";
 
 interface BaseNodeProps {
   type: string;
@@ -27,6 +28,9 @@ const BaseNode = ({ type, index, id, data }: BaseNodeProps) => {
   }
   if (type === "loading") {
     return <LoadingNode index={index} id={id} data={data} />;
+  }
+  if (type === "telegram") {
+    return <Telegram index={index} id={id} data={data} />;
   }
   return <div>BaseNode</div>;
 };
